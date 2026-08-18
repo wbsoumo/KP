@@ -37,7 +37,7 @@ export function SectionHead({
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden px-5 pb-16 pt-28 sm:px-8 sm:pb-24 sm:pt-40">
+    <section className="relative overflow-hidden px-5 pb-12 pt-18 sm:px-8 sm:pb-20 sm:pt-24">
       <div className="mx-auto grid max-w-[1400px] items-center gap-14 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
           <Reveal>
