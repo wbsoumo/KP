@@ -1,4 +1,6 @@
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Reveal } from "./Reveal";
 import { Marquee } from "./Marquee";
@@ -130,6 +132,84 @@ export function IntroStrip() {
 }
 
 export function ServicesSection() {
+  const [activeService, setActiveService] = useState(0);
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, startIndex: 0 });
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedImage(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const serviceWorks: Record<string, string[]> = {
+    "social-media": [
+      "/social%20media/WhatsApp%20Image%202026-08-18%20at%2017.40.49.jpeg",
+      "/social%20media/WhatsApp%20Image%202026-08-18%20at%2018.05.08.jpeg",
+      "/social%20media/WhatsApp%20Image%202026-08-18%20at%2018.13.20.jpeg",
+      "/social%20media/WhatsApp%20Image%202026-08-18%20at%2018.16.52.jpeg",
+      "/social%20media/WhatsApp%20Image%202026-08-18%20at%2018.34.54.jpeg",
+    ],
+    "video-production": [
+      "/videos/IMG_1027.MP4",
+      "/videos/IMG_1028.MP4",
+      "/videos/IMG_4821.MP4",
+      "/videos/export-1787053026138.mp4",
+    ],
+    "creative-advertising": [
+      "/creative/IMG_1029.MP4",
+      "/creative/WhatsApp%20Image%202026-08-18%20at%2018.39.40.jpeg",
+      "/creative/WhatsApp%20Image%202026-08-18%20at%2018.40.17.jpeg",
+      "/creative/WhatsApp%20Image%202026-08-18%20at%2018.40.59.jpeg",
+      "/creative/WhatsApp%20Image%202026-08-18%20at%2018.44.54.jpeg",
+    ],
+    "website-seo": [
+      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=400&q=80",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80",
+    ],
+    "creator-management": [
+      "/creator/WhatsApp%20Image%202026-08-18%20at%2018.53.05.jpeg",
+      "/creator/WhatsApp%20Image%202026-08-18%20at%2018.53.06.jpeg",
+      "/creator/WhatsApp%20Image%202026-08-18%20at%2018.53.061.jpeg",
+      "/creator/WhatsApp%20Image%202026-08-18%20at%2018.54.56.jpeg",
+      "/creator/WhatsApp%20Image%202026-08-18%20at%20218.53.06.jpeg",
+    ],
+    "collaborations": [
+      "/brand/WhatsApp%20Image%202026-08-18%20at%2018.47.37.jpeg",
+      "/brand/WhatsApp%20Image%202026-08-18%20at%2018.48.49.jpeg",
+      "/brand/simran.jpeg",
+    ],
+  };
+
+  useEffect(() => {
+    if (emblaApi) {
+      emblaApi.scrollTo(activeService);
+    }
+  }, [activeService, emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const onSelect = () => {
+      setActiveService(emblaApi.selectedScrollSnap());
+    };
+    emblaApi.on("select", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
   return (
     <section id="services" className="px-5 py-24 sm:px-8 sm:py-32">
       <div className="mx-auto max-w-[1400px]">
@@ -143,44 +223,197 @@ export function ServicesSection() {
             </>
           }
         />
-        <div className="mt-16 grid gap-x-12 gap-y-2 md:grid-cols-2">
-          {services.map((s, i) => (
-            <Reveal
-              key={s.id}
-              delay={i * 60}
-              className={i % 2 === 1 ? "md:mt-16" : undefined}
-            >
-              <Link
-                to="/services"
-                hash={s.id}
-                className="group block border-t border-border py-10 transition-colors hover:border-transparent"
+
+        {/* Row of Tabs */}
+        <div className="mt-12 flex flex-wrap justify-center gap-3 md:justify-start">
+          {services.map((s, i) => {
+            const isActive = activeService === i;
+            return (
+              <button
+                key={s.id}
+                onClick={() => setActiveService(i)}
+                onMouseEnter={() => setActiveService(i)}
+                className={`group relative px-6 py-3 rounded-full border text-sm font-semibold tracking-tight transition-all duration-300 ${
+                  isActive
+                    ? "border-transparent bg-secondary/50 text-foreground shadow-[var(--shadow-lift)]"
+                    : "border-border bg-background text-ink-soft hover:border-border/80 hover:bg-secondary/20 hover:text-foreground"
+                }`}
               >
-                <div className="flex items-start justify-between gap-6">
-                  <div>
-                    <span className="font-display text-xs tracking-[0.2em] text-ink-soft">
-                      0{i + 1}
-                    </span>
-                    <h3 className="mt-4 font-display text-2xl font-bold tracking-tight text-foreground transition-transform duration-500 group-hover:translate-x-1.5 sm:text-3xl">
-                      {s.title}
-                    </h3>
-                    <p className="mt-3 max-w-sm text-sm leading-relaxed text-ink-soft">{s.line}</p>
-                    <span className="mt-6 inline-flex items-center gap-1.5 font-display text-sm text-foreground">
-                      Explore
-                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </span>
-                  </div>
-                  <span className="relative grid h-14 w-14 shrink-0 place-items-center rounded-full border border-border transition-all duration-500 group-hover:border-transparent">
-                    <span className="absolute inset-0 rounded-full kp-gradient-bg opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                    <span className="absolute inset-[5px] rounded-full bg-background transition-transform duration-500 group-hover:scale-90" />
-                    <span className="relative h-2.5 w-2.5 rounded-full kp-gradient-bg" />
+                {isActive && (
+                  <span className="absolute inset-0 rounded-full border border-transparent kp-gradient-border" />
+                )}
+                <span className="flex items-center gap-2">
+                  <span className={`font-display text-[10px] tracking-wider ${
+                    isActive ? "kp-gradient-text font-bold" : "text-ink-soft/70"
+                  }`}>
+                    0{i + 1}
                   </span>
+                  {s.title}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Carousel below */}
+        <div className="mt-12 relative group/carousel">
+          {/* Viewport */}
+          <div className="overflow-hidden rounded-3xl border border-border bg-secondary/30 backdrop-blur-xl shadow-[var(--shadow-lift)]" ref={emblaRef}>
+            <div className="flex">
+              {services.map((s, i) => (
+                <div key={s.id} className="flex-[0_0_100%] min-w-0 p-8 sm:p-12 relative overflow-hidden flex flex-col gap-10">
+                  {/* Background ambient glow matching the active service */}
+                  <div className="absolute -right-24 -top-24 h-[25rem] w-[25rem] rounded-full kp-gradient-bg opacity-10 blur-[100px] pointer-events-none" />
+
+                  {/* Top: Details Grid */}
+                  <div className="relative grid gap-8 md:grid-cols-[1.2fr_0.8fr] items-start">
+                    {/* Left: Title, Description & Action */}
+                    <div>
+                      <span className="font-display text-[0.65rem] uppercase tracking-[0.2em] text-ink-soft">
+                        Service Details
+                      </span>
+                      <h3 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground">
+                        {s.title}
+                      </h3>
+                      <p className="mt-4 max-w-xl text-base leading-relaxed text-ink-soft">
+                        {s.line}
+                      </p>
+                      
+                      <div className="mt-6">
+                        <Link
+                          to="/services"
+                          hash={s.id}
+                          className="group inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-2.5 font-display text-sm font-semibold text-foreground transition-all duration-300 hover:border-transparent hover:shadow-[var(--shadow-lift)] relative overflow-hidden"
+                        >
+                          <span className="absolute inset-0 rounded-full border border-transparent kp-gradient-border opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                          Explore service
+                          <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                        </Link>
+                      </div>
+                    </div>
+
+                    {/* Right: What We Offer list */}
+                    <div className="md:border-l md:border-border md:pl-8 flex flex-col gap-3 h-full justify-center">
+                      <p className="font-display text-xs font-semibold uppercase tracking-wider text-foreground">
+                        What we offer:
+                      </p>
+                      <ul className="grid gap-2 sm:grid-cols-2 md:grid-cols-1 text-sm text-ink-soft">
+                        {s.items.map((item, idx) => (
+                          <li key={idx} className="flex items-center gap-2.5">
+                            <span className="h-1.5 w-1.5 shrink-0 rounded-full kp-gradient-bg" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Bottom: One-line Work Images Marquee */}
+                  <div className="relative w-full rounded-2xl overflow-hidden border border-border/50 bg-secondary/50 p-4 shadow-md">
+                    {/* Fade masks on the left and right edges */}
+                    <div className="absolute inset-0 [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)] pointer-events-none z-10" />
+
+                    <div className="relative flex overflow-hidden w-full">
+                      <div className="flex w-max animate-kp-marquee items-center gap-4 pr-4">
+                        {[...serviceWorks[s.id], ...serviceWorks[s.id]].map((imgUrl, idx) => {
+                          const isVid = imgUrl.toLowerCase().endsWith(".mp4") || imgUrl.toLowerCase().endsWith(".webm") || imgUrl.toLowerCase().endsWith(".mov");
+                          return (
+                            <button
+                              key={idx}
+                              onClick={() => setSelectedImage(imgUrl)}
+                            className={`h-28 sm:h-36 ${
+                              s.id === "creative-advertising" ? "w-[149px] sm:w-[192px]" : "w-44 sm:w-56"
+                            } rounded-xl overflow-hidden border border-border/50 shadow-sm shrink-0 cursor-zoom-in group/img relative text-left`}
+                            >
+                              {isVid ? (
+                                <video
+                                  src={imgUrl}
+                                  autoPlay
+                                  loop
+                                  muted
+                                  playsInline
+                                  className="h-full w-full object-cover transition-transform duration-500 group-hover/img:scale-105"
+                                />
+                              ) : (
+                                <img
+                                  src={imgUrl}
+                                  alt={`${s.title} work ${idx}`}
+                                  className="h-full w-full object-cover transition-transform duration-500 group-hover/img:scale-105"
+                                />
+                              )}
+                              {/* Hover overlay hint */}
+                              <div className="absolute inset-0 bg-ink/10 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                <span className="bg-background/80 text-foreground text-xs font-semibold px-2.5 py-1.5 rounded-full shadow backdrop-blur-sm">
+                                  View
+                                </span>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <span className="mt-10 block h-px w-0 kp-gradient-bg transition-all duration-700 group-hover:w-full" />
-              </Link>
-            </Reveal>
-          ))}
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation buttons */}
+          <button
+            onClick={scrollPrev}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 grid h-12 w-12 place-items-center rounded-full border border-border bg-background/80 text-foreground backdrop-blur opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-background hover:scale-105"
+            aria-label="Previous service"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+          <button
+            onClick={scrollNext}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 grid h-12 w-12 place-items-center rounded-full border border-border bg-background/80 text-foreground backdrop-blur opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 hover:bg-background hover:scale-105"
+            aria-label="Next service"
+          >
+            <ArrowRight className="h-5 w-5" />
+          </button>
         </div>
       </div>
+
+      {/* Lightbox Popup */}
+      {selectedImage && (() => {
+        const isVid = selectedImage.toLowerCase().endsWith(".mp4") || selectedImage.toLowerCase().endsWith(".webm") || selectedImage.toLowerCase().endsWith(".mov");
+        return (
+          <div
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-background/90 backdrop-blur-md cursor-zoom-out animate-in fade-in duration-300"
+          >
+            <div className="relative max-w-[90vw] max-h-[85vh] overflow-hidden rounded-2xl border border-border/50 shadow-2xl bg-secondary/20">
+              {isVid ? (
+                <video
+                  src={selectedImage}
+                  autoPlay
+                  controls
+                  loop
+                  playsInline
+                  className="max-w-full max-h-[85vh] object-contain rounded-2xl animate-in zoom-in-95 duration-300"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              ) : (
+                <img
+                  src={selectedImage}
+                  alt="Selected portfolio item"
+                  className="max-w-full max-h-[85vh] object-contain rounded-2xl animate-in zoom-in-95 duration-300"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              )}
+              <button
+                onClick={() => setSelectedImage(null)}
+                className="absolute top-4 right-4 h-10 w-10 grid place-items-center rounded-full border border-border bg-background/80 text-foreground backdrop-blur-md hover:bg-background hover:scale-105 transition-all duration-300"
+                aria-label="Close image popup"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+        );
+      })()}
     </section>
   );
 }
