@@ -71,6 +71,43 @@ function ContactPage() {
                 <p className="kp-eyebrow">Response time</p>
                 <p className="mt-2 font-display text-lg text-foreground">Within 24 hours</p>
               </div>
+              <div className="border-t border-border pt-4">
+                <p className="kp-eyebrow">Office address</p>
+                <address className="mt-2 block font-display text-base not-italic leading-relaxed text-foreground">
+                  Technopolis, 11th Floor, BP Block,
+                  <br />
+                  Sector V, Bidhannagar, North 24 Parganas,
+                  <br />
+                  Salt Lake, Kolkata - 700091, India
+                </address>
+              </div>
+              <div className="border-t border-border pt-4">
+                <p className="kp-eyebrow">Contact Details</p>
+                <div className="mt-3 space-y-3 font-display text-base text-foreground">
+                  <div>
+                    <span className="block text-xs uppercase tracking-wider text-ink-soft">
+                      Technical Support
+                    </span>
+                    <a
+                      href="tel:+918016222991"
+                      className="mt-0.5 block font-semibold hover:text-kp-magenta transition-colors"
+                    >
+                      Soumojit Saha: +91 8016222991
+                    </a>
+                  </div>
+                  <div>
+                    <span className="block text-xs uppercase tracking-wider text-ink-soft">
+                      Marketing & Creative
+                    </span>
+                    <a
+                      href="tel:+917980657709"
+                      className="mt-0.5 block font-semibold hover:text-kp-magenta transition-colors"
+                    >
+                      Roni Banerjee: +91 7980657709
+                    </a>
+                  </div>
+                </div>
+              </div>
             </Reveal>
           </div>
 
