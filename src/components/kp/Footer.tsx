@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Logo, Magnetic } from "./ui";
-import { PHONE, PHONE_TEL } from "@/lib/kp-data";
+import { CONTACTS } from "@/lib/kp-data";
 
 const NAV: { label: string; to: "/" | "/work" | "/creators" | "/about" | "/contact"; hash?: string }[] = [
   { label: "Universe", to: "/" },
@@ -14,7 +14,7 @@ const NAV: { label: string; to: "/" | "/work" | "/creators" | "/about" | "/conta
 export function Footer() {
   return (
     <footer className="relative border-t border-white/10 px-5 py-16 md:px-10">
-      <div className="mx-auto grid max-w-[1400px] gap-12 md:grid-cols-[1.2fr_1fr_1fr]">
+      <div className="mx-auto grid max-w-[1400px] gap-12 md:grid-cols-[1.2fr_1fr_1.2fr]">
         <div>
           <Logo className="h-11" />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted-foreground">
@@ -41,18 +41,25 @@ export function Footer() {
         </nav>
 
         <div>
-          <p className="kp-eyebrow mb-5">Studio</p>
-          <p className="text-sm text-foreground/70">Founded by Roni Banerjee</p>
-          <a
-            href={`tel:${PHONE_TEL}`}
-            className="mt-2 block text-lg font-semibold tracking-tight text-foreground"
-          >
-            {PHONE}
-          </a>
-          <Magnetic>
+          <p className="kp-eyebrow mb-4">Studio Leadership</p>
+          <div className="space-y-4">
+            {CONTACTS.map((c) => (
+              <div key={c.name}>
+                <p className="text-[0.65rem] uppercase tracking-[0.16em] text-muted-foreground">{c.role}</p>
+                <p className="text-sm font-bold text-foreground">{c.name}</p>
+                <a
+                  href={`tel:${c.tel}`}
+                  className="text-xs font-semibold text-foreground/80 hover:text-foreground"
+                >
+                  {c.phone}
+                </a>
+              </div>
+            ))}
+          </div>
+          <Magnetic className="mt-6">
             <Link
               to="/contact"
-              className="kp-gradient-bg mt-6 inline-flex rounded-full px-5 py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white"
+              className="kp-gradient-bg inline-flex rounded-full px-5 py-2.5 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white"
             >
               Start a project →
             </Link>

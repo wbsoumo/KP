@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CtaLink, Reveal, SectionHeading } from "@/components/kp/ui";
-import { PROCESS, PHONE, PHONE_TEL } from "@/lib/kp-data";
+import { PROCESS, CONTACTS } from "@/lib/kp-data";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -9,12 +9,12 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "Kreative Planet is a creative advertising and brand content studio founded by Roni Banerjee, building ideas that earn attention.",
+          "Kreative Planet is a creative advertising and digital growth studio led by Roni Banerjee and Soumojit Saha.",
       },
       { property: "og:title", content: "About Kreative Planet — Creativity Without Gravity" },
       {
         property: "og:description",
-        content: "A creative advertising and brand content studio founded by Roni Banerjee.",
+        content: "A creative advertising and brand content studio.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -41,19 +41,20 @@ function AboutPage() {
 
         <div className="mt-20 grid gap-10 md:grid-cols-2">
           <Reveal>
-            <div className="kp-hairline rounded-3xl bg-card/50 p-8">
-              <p className="kp-eyebrow mb-4">Founder</p>
-              <h2 className="text-2xl font-bold uppercase">Roni Banerjee</h2>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                Kreative Planet started with a simple belief — attention isn't bought, it's earned
-                with better ideas. Every project runs through one filter: is this worth stopping for?
-              </p>
-              <a
-                href={`tel:${PHONE_TEL}`}
-                className="mt-6 inline-block text-lg font-semibold tracking-tight"
-              >
-                {PHONE}
-              </a>
+            <div className="kp-hairline rounded-3xl bg-card/50 p-8 space-y-6">
+              <p className="kp-eyebrow">Leadership</p>
+              {CONTACTS.map((c) => (
+                <div key={c.name} className="border-b border-white/10 pb-4 last:border-b-0 last:pb-0">
+                  <p className="text-xs uppercase tracking-[0.2em] text-kp-pink">{c.role}</p>
+                  <h3 className="mt-1 text-xl font-bold uppercase text-foreground">{c.name}</h3>
+                  <a
+                    href={`tel:${c.tel}`}
+                    className="mt-1.5 inline-block text-base font-medium text-foreground/80 hover:text-foreground"
+                  >
+                    {c.phone}
+                  </a>
+                </div>
+              ))}
             </div>
           </Reveal>
           <Reveal delay={120}>

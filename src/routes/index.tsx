@@ -55,12 +55,21 @@ function Hero() {
           </div>
         </Reveal>
         <Reveal delay={340}>
-          <p className="mt-14 text-xs uppercase tracking-[0.3em] text-foreground/50">
-            Founded by Roni Banerjee ·{" "}
-            <a href={`tel:${PHONE_TEL}`} className="text-foreground/80 hover:text-foreground">
-              {PHONE}
-            </a>
-          </p>
+          <div className="mt-14 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs uppercase tracking-[0.25em] text-foreground/50">
+            <span>
+              Marketing &amp; Graphics:{" "}
+              <a href="tel:+917980657709" className="text-foreground/80 hover:text-foreground">
+                Roni Banerjee (+91 79806 57709)
+              </a>
+            </span>
+            <span className="hidden sm:inline text-foreground/20">|</span>
+            <span>
+              Technical &amp; Web Dev:{" "}
+              <a href="tel:+918016222991" className="text-foreground/80 hover:text-foreground">
+                Soumojit Saha (+91 80162 22991)
+              </a>
+            </span>
+          </div>
         </Reveal>
       </div>
     </section>

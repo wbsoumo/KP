@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CtaLink, Reveal, SectionHeading } from "@/components/kp/ui";
-import { PHONE, PHONE_TEL, WHATSAPP } from "@/lib/kp-data";
+import { CONTACTS } from "@/lib/kp-data";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -9,12 +9,12 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Tell us about your brand and we'll come back with an idea. Call +91 79806 57709 or message Kreative Planet on WhatsApp.",
+          "Marketing & Graphics: Roni Banerjee (+91 79806 57709) | Technical & Web Development: Soumojit Saha (+91 80162 22991).",
       },
       { property: "og:title", content: "Contact Kreative Planet — Start a Project" },
       {
         property: "og:description",
-        content: "Tell us about your brand and we'll come back with an idea.",
+        content: "Get in touch with Kreative Planet for Marketing, Graphics and Technical Development.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -36,34 +36,32 @@ function ContactPage() {
               <span className="kp-gradient-text">something</span>
             </>
           }
-          sub="Brand, business, personal brand or creator — tell us where you're headed and we'll bring the idea."
+          sub="Brand, business, personal brand or creator — reach out to our leaders for marketing, graphics or website development."
         />
 
         <div className="mt-16 grid gap-6 md:grid-cols-2">
-          <Reveal>
-            <a
-              href={`tel:${PHONE_TEL}`}
-              className="kp-hairline block rounded-3xl bg-card/50 p-8 transition-colors hover:border-white/30"
-            >
-              <p className="kp-eyebrow mb-4">Call the studio</p>
-              <p className="text-3xl font-bold tracking-tight">{PHONE}</p>
-              <p className="mt-3 text-sm text-muted-foreground">Mon – Sat, 10am – 8pm IST</p>
-            </a>
-          </Reveal>
-          <Reveal delay={120}>
-            <a
-              href={WHATSAPP}
-              target="_blank"
-              rel="noreferrer"
-              className="kp-hairline block rounded-3xl bg-card/50 p-8 transition-colors hover:border-white/30"
-            >
-              <p className="kp-eyebrow mb-4">WhatsApp</p>
-              <p className="text-3xl font-bold tracking-tight">Message us</p>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Fastest way to reach Roni and the team.
-              </p>
-            </a>
-          </Reveal>
+          {CONTACTS.map((c, i) => (
+            <Reveal key={c.name} delay={i * 120}>
+              <div className="kp-hairline rounded-3xl bg-card/50 p-8 flex flex-col justify-between h-full">
+                <div>
+                  <p className="kp-eyebrow mb-2">{c.role}</p>
+                  <h3 className="text-2xl font-bold uppercase">{c.name}</h3>
+                  <a
+                    href={`tel:${c.tel}`}
+                    className="mt-4 block text-xl font-semibold tracking-tight text-foreground hover:text-kp-pink transition-colors"
+                  >
+                    {c.phone}
+                  </a>
+                </div>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <CtaLink href={`tel:${c.tel}`}>Call →</CtaLink>
+                  <CtaLink href={c.whatsapp} variant="ghost">
+                    WhatsApp →
+                  </CtaLink>
+                </div>
+              </div>
+            </Reveal>
+          ))}
         </div>
 
         <div className="mt-24 flex flex-wrap gap-4">

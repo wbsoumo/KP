@@ -228,6 +228,23 @@ export const CREATORS = [
   { name: "Gaming & Esports", audience: "Late-night", format: "Streams · Clips" },
 ];
 
+export const CONTACTS = [
+  {
+    role: "Marketing & Graphics",
+    name: "Roni Banerjee",
+    phone: "+91 79806 57709",
+    tel: "+917980657709",
+    whatsapp: "https://wa.me/917980657709?text=Hi%20Kreative%20Planet%2C%20I%27d%20like%20to%20discuss%20marketing%20and%20graphics.",
+  },
+  {
+    role: "Technical & Website Development",
+    name: "Soumojit Saha",
+    phone: "+91 80162 22991",
+    tel: "+918016222991",
+    whatsapp: "https://wa.me/918016222991?text=Hi%20Kreative%20Planet%2C%20I%27d%20like%20to%20discuss%20website%20and%20tech%20development.",
+  },
+];
+
 export const PHONE = "+91 79806 57709";
 export const PHONE_TEL = "+917980657709";
 export const WHATSAPP = "https://wa.me/917980657709?text=Hi%20Kreative%20Planet%2C%20I%27d%20like%20to%20start%20a%20project.";
