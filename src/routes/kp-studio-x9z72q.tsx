@@ -45,10 +45,12 @@ function AdminPage() {
   const [items, setItems] = useState<MediaItem[]>([]);
 
   useEffect(() => {
-    const session = localStorage.getItem("kp_admin_auth");
-    if (session === "true") {
-      setIsAuthenticated(true);
-      setItems(getStoredMediaGallery());
+    if (typeof window !== "undefined") {
+      const session = localStorage.getItem("kp_admin_auth");
+      if (session === "true") {
+        setIsAuthenticated(true);
+        setItems(getStoredMediaGallery());
+      }
     }
   }, []);
 
