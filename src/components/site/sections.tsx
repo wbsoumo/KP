@@ -308,53 +308,6 @@ export function ServicesSection() {
                     </div>
                   </div>
 
-                  {/* Bottom: One-line Work Images Marquee */}
-                  <div className="relative w-full rounded-2xl overflow-hidden border border-border/50 bg-secondary/50 p-4 shadow-md">
-                    {/* Fade masks on the left and right edges */}
-                    <div className="absolute inset-0 [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)] pointer-events-none z-10" />
-
-                    <div className="relative flex overflow-hidden w-full">
-                      <div className="flex w-max animate-kp-marquee items-center gap-4 pr-4">
-                        {[...serviceWorks[s.id], ...serviceWorks[s.id]].map((imgUrl, idx) => {
-                          const isVid = imgUrl.toLowerCase().endsWith(".mp4") || imgUrl.toLowerCase().endsWith(".webm") || imgUrl.toLowerCase().endsWith(".mov");
-                          return (
-                            <button
-                              key={idx}
-                              onClick={() => setSelectedImage(imgUrl)}
-                            className={`h-28 sm:h-36 ${
-                              s.id === "creative-advertising" ? "w-[149px] sm:w-[192px]" : "w-44 sm:w-56"
-                            } rounded-xl overflow-hidden border border-border/50 shadow-sm shrink-0 cursor-zoom-in group/img relative text-left`}
-                            >
-                              {isVid ? (
-                                <video
-                                  src={imgUrl}
-                                  preload="none"
-                                  autoPlay
-                                  loop
-                                  muted
-                                  playsInline
-                                  className="h-full w-full object-cover transition-transform duration-500 group-hover/img:scale-105"
-                                />
-                              ) : (
-                                <img
-                                  src={imgUrl}
-                                  loading="lazy"
-                                  alt={`${s.title} work ${idx}`}
-                                  className="h-full w-full object-cover transition-transform duration-500 group-hover/img:scale-105"
-                                />
-                              )}
-                              {/* Hover overlay hint */}
-                              <div className="absolute inset-0 bg-ink/10 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                <span className="bg-background/80 text-foreground text-xs font-semibold px-2.5 py-1.5 rounded-full shadow backdrop-blur-sm">
-                                  View
-                                </span>
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
                 </div>
               ))}
             </div>
