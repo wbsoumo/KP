@@ -11,9 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CreatorsRouteImport } from './routes/creators'
+import { Route as KpStudioX9z72qRouteImport } from './routes/kp-studio-x9z72q'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as WorkRouteImport } from './routes/work'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
@@ -29,11 +29,6 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -42,6 +37,11 @@ const ContactRoute = ContactRouteImport.update({
 const CreatorsRoute = CreatorsRouteImport.update({
   id: '/creators',
   path: '/creators',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KpStudioX9z72qRoute = KpStudioX9z72qRouteImport.update({
+  id: '/kp-studio-x9z72q',
+  path: '/kp-studio-x9z72q',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -68,9 +68,9 @@ const WorkSlugRoute = WorkSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/creators': typeof CreatorsRoute
+  '/kp-studio-x9z72q': typeof KpStudioX9z72qRoute
   '/services': typeof ServicesRoute
   '/work': typeof WorkRouteWithChildren
   '/work/$slug': typeof WorkSlugRoute
@@ -79,9 +79,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/creators': typeof CreatorsRoute
+  '/kp-studio-x9z72q': typeof KpStudioX9z72qRoute
   '/services': typeof ServicesRoute
   '/work/$slug': typeof WorkSlugRoute
   '/work': typeof WorkIndexRoute
@@ -90,9 +90,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/creators': typeof CreatorsRoute
+  '/kp-studio-x9z72q': typeof KpStudioX9z72qRoute
   '/services': typeof ServicesRoute
   '/work': typeof WorkRouteWithChildren
   '/work/$slug': typeof WorkSlugRoute
@@ -103,9 +103,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/admin'
     | '/contact'
     | '/creators'
+    | '/kp-studio-x9z72q'
     | '/services'
     | '/work'
     | '/work/$slug'
@@ -114,9 +114,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/admin'
     | '/contact'
     | '/creators'
+    | '/kp-studio-x9z72q'
     | '/services'
     | '/work/$slug'
     | '/work'
@@ -124,9 +124,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
-    | '/admin'
     | '/contact'
     | '/creators'
+    | '/kp-studio-x9z72q'
     | '/services'
     | '/work'
     | '/work/$slug'
@@ -136,9 +136,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  AdminRoute: typeof AdminRoute
   ContactRoute: typeof ContactRoute
   CreatorsRoute: typeof CreatorsRoute
+  KpStudioX9z72qRoute: typeof KpStudioX9z72qRoute
   ServicesRoute: typeof ServicesRoute
   WorkRoute: typeof WorkRouteWithChildren
 }
@@ -159,13 +159,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -178,6 +171,13 @@ declare module '@tanstack/react-router' {
       path: '/creators'
       fullPath: '/creators'
       preLoaderRoute: typeof CreatorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kp-studio-x9z72q': {
+      id: '/kp-studio-x9z72q'
+      path: '/kp-studio-x9z72q'
+      fullPath: '/kp-studio-x9z72q'
+      preLoaderRoute: typeof KpStudioX9z72qRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -226,9 +226,9 @@ const WorkRouteWithChildren = WorkRoute._addFileChildren(WorkRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  AdminRoute: AdminRoute,
   ContactRoute: ContactRoute,
   CreatorsRoute: CreatorsRoute,
+  KpStudioX9z72qRoute: KpStudioX9z72qRoute,
   ServicesRoute: ServicesRoute,
   WorkRoute: WorkRouteWithChildren,
 }

@@ -8,10 +8,10 @@ import {
   type MediaItem,
 } from "@/lib/gallery-store";
 
-export const Route = createFileRoute("/admin")({
+export const Route = createFileRoute("/kp-studio-x9z72q")({
   head: () => ({
     meta: [
-      { title: "Admin Portal — Kreative Planet" },
+      { title: "Portal — Kreative Planet" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
