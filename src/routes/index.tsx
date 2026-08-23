@@ -347,11 +347,11 @@ function Index() {
   return (
     <main>
       <Hero />
+      <FeaturedWork />
       <Planets />
       <BrandGrowthSection />
       <ServicesSection />
       <GrowthOrbit />
-      <FeaturedWork />
       <CreatorTeaser />
       <ContactBand />
     </main>
