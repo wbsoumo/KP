@@ -15,36 +15,40 @@ async function uploadFile(filePath, relativePath) {
   const isVideo = filePath.toLowerCase().endsWith(".mp4") || filePath.toLowerCase().endsWith(".mov");
   const folder = path.dirname(relativePath);
   console.log(`Uploading ${relativePath}...`);
-  try {
-    let result;
-    const options = {
-      resource_type: isVideo ? "video" : "image",
-      folder: `kreative-planet/${folder}`,
-      use_filename: true,
-      unique_filename: false,
-      overwrite: true,
-      timeout: 120000,
-    };
-    if (isVideo) {
-      result = await new Promise((resolve, reject) => {
-        cloudinary.uploader.upload_large(
-          filePath,
-          options,
-          (error, res) => {
-            if (error) reject(error);
-            else resolve(res);
-          }
-        );
-      });
-    } else {
-      result = await cloudinary.uploader.upload(filePath, options);
+  const options = {
+    resource_type: isVideo ? "video" : "image",
+    folder: `kreative-planet/${folder}`,
+    use_filename: true,
+    unique_filename: false,
+    overwrite: true,
+    timeout: 180000,
+  };
+
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      let result;
+      if (isVideo) {
+        result = await new Promise((resolve, reject) => {
+          cloudinary.uploader.upload_large(
+            filePath,
+            { ...options, chunk_size: 6000000 },
+            (error, res) => {
+              if (error) reject(error);
+              else resolve(res);
+            }
+          );
+        });
+      } else {
+        result = await cloudinary.uploader.upload(filePath, options);
+      }
+      const secureUrl = result?.secure_url || result?.url;
+      console.log(`Uploaded ${relativePath} -> ${secureUrl}`);
+      return { relativePath, url: secureUrl };
+    } catch (err) {
+      console.error(`Attempt ${attempt} failed for ${relativePath}:`, err.message || err);
+      if (attempt === 3) return null;
+      await new Promise(r => setTimeout(r, 2000));
     }
-    const secureUrl = result?.secure_url || result?.url;
-    console.log(`Uploaded ${relativePath} -> ${secureUrl}`);
-    return { relativePath, url: secureUrl };
-  } catch (err) {
-    console.error(`Failed uploading ${relativePath}:`, err);
-    return null;
   }
 }
 
