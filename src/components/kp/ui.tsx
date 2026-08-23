@@ -4,17 +4,15 @@ import logo from "@/assets/kreative-planet-logo.png.asset.json";
 
 export function Logo({
   className = "h-9",
-  withTagline = false,
 }: {
   className?: string;
   withTagline?: boolean;
 }) {
   return (
     <img
-      src={logo.url}
+      src="https://res.cloudinary.com/dt02mpeqj/image/upload/v1787507493/kreative-planet/IMG_4882.png"
       alt="Kreative Planet — Creativity Without Gravity"
-      className={`kp-logo-img w-auto object-contain ${className}`}
-      style={withTagline ? undefined : { objectPosition: "center", clipPath: "inset(8% 16% 8% 16%)" }}
+      className={`h-9 w-auto object-contain ${className}`}
       loading="eager"
       decoding="async"
     />
