@@ -1,73 +1,86 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Reveal } from "@/components/site/Reveal";
-import { AboutSection, ProcessSection } from "@/components/site/sections";
-import { CtaSection } from "@/components/site/CtaSection";
-
-const title = "About — Kreative Planet";
-const description =
-  "Kreative Planet combines strategy, creativity, technology, culture and growth for brands that want to think differently and grow faster.";
+import { CtaLink, Reveal, SectionHeading } from "@/components/kp/ui";
+import { PROCESS, PHONE, PHONE_TEL } from "@/lib/kp-data";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title },
-      { name: "description", content: description },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:url", content: "/about" },
+      { title: "About Kreative Planet — Creativity Without Gravity" },
+      {
+        name: "description",
+        content:
+          "Kreative Planet is a creative advertising and brand content studio founded by Roni Banerjee, building ideas that earn attention.",
+      },
+      { property: "og:title", content: "About Kreative Planet — Creativity Without Gravity" },
+      {
+        property: "og:description",
+        content: "A creative advertising and brand content studio founded by Roni Banerjee.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
   }),
   component: AboutPage,
 });
 
 function AboutPage() {
-  const beliefs = [
-    {
-      t: "Ideas before formats",
-      d: "We start with the thought, then decide whether it becomes a reel, a film, a page or a campaign.",
-    },
-    {
-      t: "Culture is the media plan",
-      d: "Brands grow faster when the work sits inside what people already care about.",
-    },
-    {
-      t: "Creative accountable to numbers",
-      d: "Every deliverable ties back to reach, retention or revenue — not vanity metrics.",
-    },
-  ];
-
   return (
-    <>
-      <section className="px-5 pb-16 pt-32 sm:px-8 sm:pb-24 sm:pt-44">
-        <div className="mx-auto max-w-[1400px]">
-          <Reveal>
-            <p className="kp-eyebrow">About</p>
-          </Reveal>
-          <Reveal delay={80}>
-            <h1 className="mt-5 max-w-5xl font-display text-5xl font-bold uppercase leading-[0.88] tracking-tighter text-foreground sm:text-7xl lg:text-[7rem]">
-              A creative studio with a{" "}
-              <span className="kp-gradient-text">growth engine.</span>
-            </h1>
-          </Reveal>
-          <div className="mt-16 grid gap-10 lg:grid-cols-3">
-            {beliefs.map((b, i) => (
-              <Reveal key={b.t} delay={i * 80}>
-                <div className="border-t border-border pt-6">
-                  <h2 className="font-display text-xl font-bold tracking-tight text-foreground">
-                    {b.t}
-                  </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-ink-soft">{b.d}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+    <main className="px-5 pb-28 pt-36 md:px-10 md:pt-44">
+      <div className="mx-auto max-w-[1400px]">
+        <SectionHeading
+          eyebrow="About"
+          title={
+            <>
+              We build ideas
+              <br />
+              <span className="kp-gradient-text">without gravity</span>
+            </>
+          }
+          sub="Kreative Planet is a creative advertising and brand content studio. We work with brands, businesses, founders, personal brands and creators to turn positioning into ideas people actually remember."
+        />
 
-      <AboutSection />
-      <ProcessSection />
-      <CtaSection />
-    </>
+        <div className="mt-20 grid gap-10 md:grid-cols-2">
+          <Reveal>
+            <div className="kp-hairline rounded-3xl bg-card/50 p-8">
+              <p className="kp-eyebrow mb-4">Founder</p>
+              <h2 className="text-2xl font-bold uppercase">Roni Banerjee</h2>
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                Kreative Planet started with a simple belief — attention isn't bought, it's earned
+                with better ideas. Every project runs through one filter: is this worth stopping for?
+              </p>
+              <a
+                href={`tel:${PHONE_TEL}`}
+                className="mt-6 inline-block text-lg font-semibold tracking-tight"
+              >
+                {PHONE}
+              </a>
+            </div>
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="kp-hairline rounded-3xl bg-card/50 p-8">
+              <p className="kp-eyebrow mb-4">How we work</p>
+              <ol className="space-y-5">
+                {PROCESS.map((p) => (
+                  <li key={p.step} className="flex gap-4">
+                    <span className="kp-gradient-text text-sm font-bold">{p.step}</span>
+                    <div>
+                      <p className="text-sm font-semibold uppercase tracking-[0.16em]">{p.title}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{p.copy}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </Reveal>
+        </div>
+
+        <div className="mt-24 flex flex-wrap gap-4">
+          <CtaLink to="/contact">Start a project →</CtaLink>
+          <CtaLink to="/work" variant="ghost">
+            See the work
+          </CtaLink>
+        </div>
+      </div>
+    </main>
   );
 }

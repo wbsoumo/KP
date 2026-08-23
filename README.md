@@ -1,160 +1,252 @@
-# Kreative Planet Launchpad
+# Cosmic Creative Launch
 
-Build a premium, modern and highly creative agency website for Kreative Planet, a 360° Creative & Digital Growth Agency.
+Build a completely original, immersive, premium and highly creative website for:
 
-BRAND
+KREATIVE PLANET
 
-Brand Name: Kreative Planet
+Creativity Without Gravity.
 
-Positioning:
+Founder: Roni Banerjee
 
-A Creative & Digital Growth Agency that helps brands build, create, market and grow.
-
-Core services:
-
-1. Social Media Marketing
-
-    * Social Media Management
-
-    * Content Strategy
-
-    * Script Writing
-
-    * Content Calendar
-
-    * Reels & Social Content
-
-    * Growth Strategy
-
-    * Analytics & Reporting
-
-2. Video Production
-
-    * Professional Video Shooting
-
-    * Video Editing
-
-    * Reels & Shorts
-
-    * Brand Videos
-
-    * Product Videos
-
-    * Motion Graphics
-
-    * Content Production
-
-3. Creative Advertising
-
-    * Creative Ad Concepts
-
-    * Social-first Advertising
-
-    * Product Ads
-
-    * Campaign Creatives
-
-    * Concept-based Advertising
-
-    * Promotional Creatives
-
-4. Website & SEO
-
-    * Website Design
-
-    * Website Development
-
-    * Landing Pages
-
-    * Website Management
-
-    * SEO
-
-    * Local SEO
-
-    * Google Business Profile
-
-    * Website Optimization
-
-5. Influencer & Creator Management
-
-    * Creator Network
-
-    * Influencer Management
-
-    * Creator Support
-
-    * Content & Editing Support
-
-    * Creator Branding
-
-    * Campaign Management
-
-6. Brand × Influencer Collaborations
-
-    * Influencer Discovery
-
-    * Brand-Creator Matching
-
-    * Collaboration Management
-
-    * Campaign Execution
-
-    * UGC Campaigns
-
-    * Negotiation & Coordination
+Contact: +91 79806 57709
 
 ⸻
 
-DESIGN DIRECTION
+1. BRAND POSITIONING
 
-Create a premium, minimal, modern creative-agency website.
+Kreative Planet is NOT a traditional digital marketing agency.
 
-The website should NOT look like a generic digital marketing agency template.
+Position it as a:
 
-Avoid:
+Creative Advertising & Brand Content Studio
 
-* Generic corporate layouts
+Kreative Planet works with:
 
-* Excessive gradients
+* Brands
 
-* Excessive glassmorphism
+* Businesses
 
-* Stock-photo-heavy sections
+* Personal Brands
 
-* Overly complicated animations
+* Founders
 
-* Cheap-looking neon effects
+* Creators
 
-* Template-like cards everywhere
+* Influencers
 
-The design should feel like a combination of:
+Core capabilities:
 
-Creative Studio + Digital Agency + Modern Media Company
+* Creative Advertising
 
-Use a clean white primary background with deep black typography and controlled gradient accents inspired by the Kreative Planet logo:
+* Creative Campaigns
 
-* Orange
+* Social Media Content
 
-* Coral / Red
+* Organic Reach & Growth
 
-* Pink
+* Video Production
 
-* Magenta
+* Video Editing
 
-* Purple
+* Creative Design
 
-Use gradients carefully as highlights, borders, buttons, icons and visual accents — NOT everywhere.
+* Brand Identity
 
-Typography should be modern, bold and clean. Use a premium geometric sans-serif style similar to modern creative-tech brands.
+* Websites & Landing Pages
+
+* Influencer Marketing
+
+* Creator Collaborations
+
+* Brand × Creator Campaigns
+
+* UGC
+
+* Creative Strategy
+
+The website itself should feel like Kreative Planet’s first creative campaign.
 
 ⸻
 
-WEBSITE STRUCTURE
+2. BIG CREATIVE IDEA
 
-1. NAVIGATION
+The entire website should be built around a:
 
-Minimal sticky navbar.
+COSMIC CREATIVE UNIVERSE
+
+The idea is:
+
+Kreative Planet is a creative universe where every planet represents a different part of our creative team and capabilities.
+
+The visitor should feel like they are entering and exploring a universe, not browsing a normal agency website.
+
+Use:
+
+* Planets
+
+* Orbits
+
+* Stars
+
+* Cosmic particles
+
+* Nebulas
+
+* Floating creative objects
+
+* Digital screens
+
+* Holographic elements
+
+* Cinematic camera movement
+
+* Space-travel transitions
+
+However, keep the execution:
+
+Premium + Minimal + Futuristic + Sophisticated
+
+Do NOT make it cartoonish or childish.
+
+⸻
+
+3. LOGO
+
+Use the provided Kreative Planet logo as the official logo.
+
+The logo features:
+
+* KP-inspired planetary symbol
+
+* Orange → Pink → Purple gradient
+
+* Orbital ring
+
+* Small planetary elements
+
+* “kreative planet” wordmark
+
+* “CREATIVITY WITHOUT GRAVITY.” tagline
+
+IMPORTANT:
+
+Do NOT redesign the logo.
+
+Do NOT distort it.
+
+Do NOT change its proportions.
+
+Use the provided logo consistently across the website.
+
+Create appropriate versions for:
+
+* Dark background
+
+* White background
+
+* Navbar
+
+* Footer
+
+* Loading animation
+
+⸻
+
+4. BRAND COLORS
+
+Take the primary visual direction from the logo.
+
+Primary Colors
+
+Orange: #FF7A00
+
+Pink: #FF007A
+
+Purple: #6C2BFF
+
+Deep Space: #05050A
+
+Midnight Navy: #090B18
+
+White: #FFFFFF
+
+Use orange → pink → purple as the signature gradient.
+
+Do not use excessive gradients everywhere.
+
+The design should remain clean and premium.
+
+⸻
+
+5. TYPOGRAPHY
+
+Use a modern geometric sans-serif typeface.
+
+Recommended:
+
+Inter / Manrope / Satoshi-style typography
+
+Headlines should be:
+
+* Large
+
+* Bold
+
+* Minimal
+
+* High contrast
+
+Body text should be clean and readable.
+
+Avoid decorative fonts.
+
+⸻
+
+6. CUSTOM PLANET CURSOR
+
+This is one of the signature features.
+
+On desktop, completely replace the default mouse pointer with a:
+
+🪐 MINI GLOWING PLANET
+
+The cursor should:
+
+* Look like a tiny 3D planet
+
+* Use orange/pink/purple glow
+
+* Have a small orbital ring
+
+* Rotate slowly
+
+* Follow the mouse with slight inertia
+
+* Leave a very subtle particle trail
+
+* Grow slightly when hovering over buttons
+
+* Create a tiny gravitational ripple when clicking
+
+When hovering over creative projects:
+
+The cursor planet should create a subtle gravitational interaction, making the project move slightly toward the cursor.
+
+The cursor should look:
+
+Elegant, futuristic and premium.
+
+Not cartoonish.
+
+On mobile/tablet:
+
+Disable the custom cursor and use touch interactions.
+
+⸻
+
+7. NAVIGATION
+
+Create a minimal transparent navbar.
 
 Left:
 
@@ -162,499 +254,871 @@ Kreative Planet logo
 
 Navigation:
 
-* Home
+Universe
 
-* Services
+Work
 
-* Work
+Planets
 
-* About
+Creators
 
-* Creators
+About
 
-* Contact
+CTA:
 
-Right:
+START A PROJECT →
 
-Start a Project →
+On scroll:
 
-Navbar should become slightly blurred/solid when scrolling.
+Navbar becomes slightly darker with subtle blur/glass effect.
+
+Keep it minimal.
 
 ⸻
 
-2. HERO SECTION
+8. HERO — ENTER THE UNIVERSE
 
-Create a powerful, minimal hero section.
+The homepage must NOT look like a normal agency website.
 
-Large headline:
+Start with a cinematic deep-space environment.
 
-WE CREATE.
+Background:
 
-YOU GROW.
+* Dark space
+
+* Tiny stars
+
+* Floating particles
+
+* Subtle nebula
+
+* Distant planets
+
+* Orbital lines
+
+Create subtle camera movement so the user feels like they are travelling through space.
+
+Main headline:
+
+CREATIVITY
+
+WITHOUT GRAVITY.
 
 Supporting text:
 
-Kreative Planet is a creative and digital growth agency helping ambitious brands turn ideas into attention, content and growth.
+A creative universe for brands, creators and ideas that deserve attention.
 
-Primary CTA:
+Buttons:
 
-Start a Project →
+ENTER THE UNIVERSE →
 
-Secondary CTA:
+EXPLORE OUR WORK
 
-Explore Our Work
-
-Visual direction:
-
-Use a large abstract circular planet/orbit-inspired graphic based on the Kreative Planet identity.
-
-The visual should be minimal and premium — not a literal realistic planet.
-
-Add subtle motion:
-
-* Slow orbit animation
-
-* Gradient movement
-
-* Mouse interaction
-
-* Soft floating elements
-
-The hero should immediately communicate:
-
-Creativity + Digital + Growth.
+Place the Kreative Planet logo subtly within the hero.
 
 ⸻
 
-3. TRUST / INTRO STRIP
+9. FIRST MAJOR SECTION — CREATIVE ADS
 
-Small statement:
+This section is extremely important.
 
-WE DON’T JUST MANAGE BRANDS.
+Do NOT show generic service cards immediately.
 
-WE BUILD THEIR DIGITAL WORLD.
+Show our creative advertising work first.
 
-Add a horizontally scrolling/moving list:
+Headline:
 
-SOCIAL • CONTENT • VIDEO • CREATIVE • WEBSITE • SEO • INFLUENCERS • ADS
+ATTENTION IS THE NEW CURRENCY.
+
+Supporting copy:
+
+We create ideas people stop for, share and remember.
+
+Create a cinematic floating advertising gallery.
+
+Display creative work as:
+
+* Floating billboards
+
+* Smartphone screens
+
+* Laptop screens
+
+* Posters
+
+* Video frames
+
+* Social media posts
+
+* Digital advertisements
+
+* Campaign visuals
+
+The creative assets should float in space like satellites.
+
+When the user moves the cursor:
+
+* Creatives move slightly
+
+* Selected creative comes forward
+
+* Depth increases
+
+* Cursor planet creates gravitational interaction
+
+CTA:
+
+VIEW OUR WORK →
 
 ⸻
 
-4. SERVICES SECTION
+10. CREATIVE UNIVERSE
 
-Heading:
+Create a major interactive solar-system section.
 
-Everything Your Brand Needs To Grow.
+Headline:
 
-Create six visually distinct service blocks.
+WELCOME TO OUR UNIVERSE.
 
-Social Media
+Subtitle:
 
-Strategy that turns attention into community.
+Every planet has a purpose. Together, they create your creative universe.
 
-Video Production
+Create one large central planet:
 
-From the shoot to the final frame.
+KREATIVE PLANET
+
+Around it, create six orbiting planets.
+
+⸻
+
+🪐 PLANET 01 — AD PLANET
 
 Creative Advertising
 
-Ads people actually want to watch.
-
-Website & SEO
-
-Digital experiences built to be discovered.
-
-Influencer & Creator Management
-
-Building creators beyond content.
-
-Brand × Influencer Collaborations
-
-Connecting the right brands with the right creators.
-
-Each service should have:
-
-* Minimal icon/visual
-
-* Short description
-
-* Hover animation
-
-* “Explore →”
-
-Do not make these generic rectangular cards. Use an editorial, asymmetric layout.
-
-⸻
-
-5. CREATIVE ADVERTISING FEATURE
-
-Create a visually striking section dedicated to Kreative Planet’s Creative Advertising capability.
-
-Headline:
-
-BORING ADS DON’T BUILD CULTURE.
-
-Subheadline:
-
-We create concept-led, social-first advertising designed to stop the scroll and make brands memorable.
-
-Show multiple campaign-style visual placeholders/mockups.
-
-Include categories:
-
-* Concept Ads
-
-* Social-first Campaigns
-
-* Product Advertising
-
-* Meme & Culture-led Ads
-
-* Brand Campaigns
-
-Add CTA:
-
-Create Something Different →
-
-Use subtle scroll-based animations.
-
-⸻
-
-6. VIDEO PRODUCTION SECTION
-
-Headline:
-
-FROM IDEA TO FINAL FRAME.
-
-Show a cinematic horizontal video/reel showcase area.
+Ideas that stop the scroll.
 
 Include:
 
-Script → Shoot → Edit → Publish
+* Creative Advertising
 
-Services:
+* Campaign Concepts
 
-* Scriptwriting
+* Product Advertising
 
-* Shoot Production
+* Social Ads
+
+* Conceptual Campaigns
+
+* Creative Ad Production
+
+Visual language:
+
+A planet surrounded by floating advertisements and campaign visuals.
+
+⸻
+
+🪐 PLANET 02 — FILM PLANET
+
+Video & Production
+
+From the first frame to the final cut.
+
+Include:
+
+* Video Production
+
+* Reel Production
 
 * Video Editing
 
 * Motion Graphics
 
-* Reels
+* Commercial Content
 
-* Brand Films
+* Creative Films
 
-Use a premium video-production aesthetic.
+Visuals:
 
-⸻
-
-7. CREATOR NETWORK SECTION
-
-Create a completely different visual section.
-
-Headline:
-
-CREATORS ARE THE NEW MEDIA.
-
-Text:
-
-Kreative Planet brings creators, influencers and brands together to build content that people actually care about.
-
-Show creator profile placeholders in a clean editorial grid.
-
-Categories:
-
-Creators / Influencers / UGC / Brand Partners
-
-CTA:
-
-Join the Creator Network →
+Camera, editing timeline, film frames and cinematic screens orbiting the planet.
 
 ⸻
 
-8. BRAND × CREATOR COLLABORATION
+🪐 PLANET 03 — DESIGN PLANET
 
-Headline:
+Brand & Visual Design
 
-RIGHT BRAND.
-
-RIGHT CREATOR.
-
-RIGHT CULTURE.
-
-Explain the process visually:
-
-Discover → Match → Create → Launch → Measure
+Make your identity impossible to forget.
 
 Include:
 
-* Influencer discovery
+* Brand Identity
 
-* Creator matching
+* Logo Design
 
-* Campaign management
+* Social Media Creatives
+
+* Campaign Design
+
+* Visual Identity
+
+* Creative Direction
+
+Visuals:
+
+Typography, logos, colors and design systems orbiting the planet.
+
+⸻
+
+🪐 PLANET 04 — SOCIAL PLANET
+
+Organic Reach & Content
+
+Main statement:
+
+WE DON’T BUY ATTENTION.
+
+WE CREATE IT.
+
+Supporting copy:
+
+We create content designed to earn attention naturally through creative storytelling, platform-native content, trends, consistency and audience psychology.
+
+Include:
+
+* Organic Reach Strategy
+
+* Social Media Management
+
+* Content Strategy
+
+* Reels
+
+* Social Content
+
+* Community Building
+
+* Engagement Strategy
+
+* Trend-led Content
+
+* Performance Analysis
+
+Create an orbital growth system:
+
+IDEA → CONTENT → ATTENTION → ENGAGEMENT → COMMUNITY → GROWTH
+
+⸻
+
+🪐 PLANET 05 — CREATOR PLANET
+
+Creators & Influencers
+
+Where brands meet the right voices.
+
+Include:
+
+* Influencer Marketing
+
+* Creator Collaborations
 
 * UGC
 
-* Negotiation
+* Brand × Creator Campaigns
 
-* Performance tracking
+* Creator Management
 
-Make this section feel like a modern creator marketplace, but still premium and agency-led.
+* Campaign Coordination
 
-⸻
+Visual:
 
-9. WORK / PORTFOLIO
-
-Heading:
-
-WORK THAT SPEAKS LOUDER.
-
-Create an immersive portfolio section with large visual project cards.
-
-Categories:
-
-Branding / Social / Advertising / Video / Websites / Campaigns
-
-Use large images and smooth hover interactions.
-
-Each project should reveal:
-
-* Client
-
-* Category
-
-* Short result
-
-* View Project →
-
-Make this section visually dominant.
-
-⸻
-
-10. PROCESS
-
-Heading:
-
-HOW WE MAKE BRANDS GROW.
-
-Create a simple 5-step animated process:
-
-01 DISCOVER
-
-Understand the brand.
-
-02 STRATEGIZE
-
-Build the growth direction.
-
-03 CREATE
-
-Turn ideas into content.
-
-04 LAUNCH
-
-Put the work in front of the right audience.
-
-05 GROW
-
-Measure, optimize and scale.
-
-Use a clean horizontal timeline with subtle scroll animation.
-
-⸻
-
-11. ABOUT KREATIVE PLANET
-
-Headline:
-
-WE’RE NOT ANOTHER MARKETING AGENCY.
-
-Text:
-
-Kreative Planet is built for brands that want to think differently, create better and grow faster.
-
-Explain that the agency combines:
-
-Strategy + Creativity + Technology + Culture + Growth
-
-Use a large typography-driven visual instead of a normal “About Us” card.
-
-⸻
-
-12. CTA SECTION
-
-Create a bold final section.
-
-Headline:
-
-HAVE A BRAND TO BUILD?
-
-Subheadline:
-
-Let’s turn your next idea into something people remember.
+Creators represented as stars in a constellation.
 
 CTA:
 
-Start a Project →
+JOIN THE CONSTELLATION →
+
+FIND YOUR CREATOR →
+
+⸻
+
+🪐 PLANET 06 — DIGITAL PLANET
+
+Web & Digital Experiences
+
+Digital spaces designed to be remembered.
+
+Include:
+
+* Creative Websites
+
+* Landing Pages
+
+* Campaign Websites
+
+* Microsites
+
+* Digital Experiences
+
+* Conversion-focused Design
+
+Visual:
+
+Floating browser windows, websites and interactive interfaces orbiting the planet.
+
+⸻
+
+11. PLANET INTERACTION
+
+The planets must NOT behave like ordinary cards.
+
+They should actually exist inside a cosmic environment.
+
+On hover:
+
+* Planet rotates faster
+
+* Glow increases
+
+* Orbit becomes brighter
+
+* Cursor planet interacts with it
+
+On click:
+
+CAMERA ZOOMS INTO THE PLANET.
+
+Example:
+
+User clicks:
+
+AD PLANET
+
+The camera flies through space toward the planet.
+
+Transition into:
+
+AD PLANET
+
+Then show:
+
+WE DON’T MAKE BORING ADS.
+
+Then display relevant advertising work.
+
+Use the same experience for all planets.
+
+⸻
+
+12. OUR CREATIVE GALAXY — PORTFOLIO
+
+Create a major portfolio section.
+
+Headline:
+
+OUR CREATIVE GALAXY
+
+Subtitle:
+
+Ideas we’ve launched into the world.
+
+Do NOT use a boring 3-column portfolio grid.
+
+Create an interactive floating gallery.
+
+Projects should appear as:
+
+* Floating smartphones
+
+* Laptop screens
+
+* Posters
+
+* Digital billboards
+
+* Video screens
+
+* Campaign cards
+
+* Holographic frames
+
+Categories:
+
+ALL
+
+ADVERTISING
+
+BRANDING
+
+SOCIAL
+
+VIDEO
+
+CREATOR CAMPAIGNS
+
+Each project should show:
+
+Project Name
+
+Category
+
+Short Description
+
+VIEW PROJECT →
+
+Clicking a project opens a cinematic case-study page.
+
+⸻
+
+13. ORGANIC REACH SECTION
+
+Create a visually powerful section specifically around organic growth.
+
+Headline:
+
+WE DON’T BUY ATTENTION.
+
+WE CREATE IT.
+
+Copy:
+
+Organic reach starts with ideas people actually want to consume. We combine creative content, platform-native storytelling, trends, consistency and audience psychology to build genuine attention.
+
+Create a visual orbit:
+
+IDEA
+
+↓
+
+CONTENT
+
+↓
+
+ATTENTION
+
+↓
+
+ENGAGEMENT
+
+↓
+
+COMMUNITY
+
+↓
+
+GROWTH
+
+Animate these stages as planets orbiting around a central glowing core.
+
+⸻
+
+14. CREATOR CONSTELLATION
+
+Create a dedicated section:
+
+BRANDS × CREATORS
+
+Supporting line:
+
+The right creator can turn a campaign into culture.
+
+Show creator profiles as stars.
+
+Connect them with subtle constellation lines.
+
+Include:
+
+* Creator categories
+
+* Audience types
+
+* Campaign examples
+
+* Collaboration formats
+
+Buttons:
+
+FIND A CREATOR →
+
+JOIN THE CONSTELLATION →
+
+⸻
+
+15. OUR PROCESS
+
+Do NOT use a normal timeline.
+
+Make it an orbital system.
+
+Center:
+
+YOUR IDEA
+
+Orbiting around it:
+
+01 — DISCOVER
+
+Understand the brand, audience and objective.
+
+02 — THINK
+
+Find the creative angle.
+
+03 — CREATE
+
+Design, shoot, edit and produce.
+
+04 — LAUNCH
+
+Put the idea into the world.
+
+05 — IMPACT
+
+Analyse, learn and grow.
+
+Use subtle planetary movement between each stage.
+
+⸻
+
+16. FOUNDER SECTION
+
+Create a premium section called:
+
+THE MIND BEHIND THE PLANET
+
+Roni Banerjee
+
+Founder — Kreative Planet
+
+Copy:
+
+Building Kreative Planet with one simple belief — creativity should have no limits.
+
+Keep this section sophisticated and minimal.
+
+If a real founder photograph is provided later, use that photograph.
+
+Do NOT generate a fake person.
+
+Use a professional portrait with subtle cosmic lighting.
+
+⸻
+
+17. WHY KREATIVE PLANET?
+
+Create a section:
+
+WHY THIS PLANET?
+
+Use large typography and minimal copy.
+
+CREATIVE FIRST.
+
+We start with ideas, not templates.
+
+BUILT FOR ATTENTION.
+
+Every piece of content has a reason to exist.
+
+ORGANIC AT HEART.
+
+We create content designed to earn attention naturally.
+
+CREATORS INCLUDED.
+
+We connect brands with the right creators.
+
+FROM IDEA TO EXECUTION.
+
+Concept, design, production, content and campaigns under one creative universe.
+
+⸻
+
+18. FINAL CTA
+
+The cosmic universe gradually becomes brighter.
+
+Stars start moving toward the center.
+
+Then display:
+
+WHAT ARE WE CREATING NEXT?
+
+Supporting text:
+
+Your idea could be the next thing people can’t stop talking about.
+
+Primary CTA:
+
+START A PROJECT →
 
 Secondary:
 
-Talk to Us
+ENTER THE UNIVERSE
 
-Use the orange → pink → purple gradient as a controlled visual accent.
-
-⸻
-
-13. FOOTER
-
-Logo:
+Then display:
 
 Kreative Planet
 
-Tagline:
-
-We Create. You Grow.
-
-Links:
-
-* Services
-
-* Work
-
-* About
-
-* Creators
-
-* Contact
-
-* Instagram
-
-* LinkedIn
-
-* YouTube
-
-Add:
-
-©️ 2026 Kreative Planet. All Rights Reserved.
+Creativity Without Gravity.
 
 ⸻
 
-INTERACTION & ANIMATION
+19. CONTACT SECTION
 
-The website should feel alive but remain premium.
+Create a premium contact area.
+
+Headline:
+
+LET’S CREATE SOMETHING UNFORGETTABLE.
+
+Founder:
+
+Roni Banerjee
+
+Founder — Kreative Planet
+
+Phone:
+
++91 79806 57709
+
+Buttons:
+
+CALL NOW →
+
+WHATSAPP US →
+
+START A PROJECT →
+
+Make the WhatsApp button open a WhatsApp conversation with the provided number.
+
+⸻
+
+20. FOOTER
+
+Minimal dark cosmic footer.
+
+Logo.
+
+Kreative Planet
+
+Creativity Without Gravity.
+
+Navigation:
+
+* Universe
+
+* Work
+
+* Planets
+
+* Creators
+
+* About
+
+* Contact
+
+Founder:
+
+Founded by Roni Banerjee
+
+Contact:
+
++91 79806 57709
+
+CTA:
+
+START A PROJECT →
+
+⸻
+
+21. MICRO-INTERACTIONS
+
+Make the entire website feel alive.
 
 Use:
 
 * Smooth scrolling
 
-* Scroll reveal animations
+* Parallax stars
 
-* Subtle parallax
+* Floating particles
 
-* Magnetic CTA buttons
+* Planet rotation
 
-* Hover transformations
+* Orbital animations
 
-* Image reveal animations
+* Magnetic buttons
 
-* Text reveal animations
+* Gravitational hover effects
 
-* Smooth page transitions
+* Custom planet cursor
 
-* Animated gradient accents
+* Smooth camera transitions
 
-* Subtle cursor interaction
+* Scroll-triggered animations
 
-Do NOT over-animate.
+* Depth and perspective
 
-Animations should feel expensive, smooth and intentional.
+* Subtle glow effects
 
-⸻
+* Cinematic page transitions
 
-RESPONSIVENESS
+Everything should feel weightless.
 
-The website must be fully responsive.
-
-Desktop:
-
-Premium editorial layout with large typography.
-
-Tablet:
-
-Maintain visual hierarchy.
-
-Mobile:
-
-Clean single-column layout with large readable typography, simplified animations and an excellent mobile navigation menu.
-
-The website must feel equally premium on mobile.
+The tagline “Creativity Without Gravity.” should influence the entire interaction design.
 
 ⸻
 
-TECHNICAL REQUIREMENTS
+22. MOBILE EXPERIENCE
 
-Build using a modern production-ready stack.
+Do NOT simply shrink the desktop website.
 
-Requirements:
+Create a proper mobile experience.
 
-* Responsive design
+On mobile:
 
-* Fast loading
+* Disable custom cursor
 
-* SEO-friendly structure
+* Make planets swipeable
 
-* Semantic HTML
+* Use touch interactions
 
-* Optimized images
+* Keep animations lightweight
 
-* Accessible buttons and navigation
+* Keep text readable
 
-* Proper metadata
+* Make creative portfolio horizontally swipeable
 
-* Open Graph support
+* Maintain cinematic transitions
 
-* Contact form
+* Keep CTA buttons easily accessible
 
-* Smooth animations
+The website must be responsive across:
 
-* Clean component architecture
+Desktop / Laptop / Tablet / Mobile
 
-Create reusable components for:
+⸻
 
-* Navbar
+23. PERFORMANCE
 
-* Buttons
+Despite the cinematic visuals, the website must remain fast.
 
-* Service sections
+Use optimized:
 
-* Portfolio cards
+* Images
 
-* Creator cards
+* Videos
 
-* CTA sections
+* 3D assets
 
-* Footer
+* Animations
 
-Use realistic placeholder content/images where actual portfolio assets are not available.
+Lazy-load portfolio media.
 
-Most importantly:
+Avoid unnecessary heavy 3D rendering if it affects performance.
 
-Do not make this look like a template.
+Maintain smooth scrolling and interactions.
 
-The final website should feel like a high-end creative agency from 2026 — bold, minimal, intelligent, culturally relevant and visually memorable.
+⸻
 
-The first impression should be:
+24. DO NOT DO THIS
 
-“These guys don’t just do marketing. They create brands.”
+Absolutely avoid:
+
+❌ Generic digital marketing agency template
+
+❌ SaaS-style design
+
+❌ Generic service cards
+
+❌ Stock photos
+
+❌ Corporate blue website
+
+❌ Excessive glassmorphism
+
+❌ Huge walls of text
+
+❌ Generic gradients
+
+❌ Cartoon planets
+
+❌ Cheesy astronaut graphics
+
+❌ Normal portfolio grid
+
+❌ “We are the best digital marketing agency” type copy
+
+❌ SEO-agency style presentation
+
+❌ Overcrowded interface
+
+⸻
+
+25. FINAL EXPERIENCE
+
+The visitor’s emotional journey should be:
+
+CURIOUS
+
+“What is this?”
+
+↓
+
+EXCITED
+
+“This looks completely different.”
+
+↓
+
+IMPRESSED
+
+“These guys create seriously good work.”
+
+↓
+
+INTERESTED
+
+“They can help my brand / business / personal brand.”
+
+↓
+
+ACTION
+
+“Let’s work with them.”
+
+⸻
+
+FINAL BRAND MESSAGE
+
+The website should ultimately communicate:
+
+Kreative Planet isn’t another agency website.
+
+It’s a creative universe.
+
+Every planet represents a capability.
+
+Every orbit represents an idea.
+
+Every creative is designed to create attention.
+
+And everything operates without gravity.
+
+KREATIVE PLANET
+
+CREATIVITY WITHOUT GRAVITY.
+
+Founder: Roni Banerjee
+
+Contact: +91 79806 57709
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/d07b4844-25d0-420b-ae7b-17a7ea67acda).
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/52906454-ca2f-4843-ac07-00bdcb028f7a).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.
