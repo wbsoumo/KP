@@ -328,6 +328,7 @@ export function ServicesSection() {
                               {isVid ? (
                                 <video
                                   src={imgUrl}
+                                  preload="none"
                                   autoPlay
                                   loop
                                   muted
@@ -337,6 +338,7 @@ export function ServicesSection() {
                               ) : (
                                 <img
                                   src={imgUrl}
+                                  loading="lazy"
                                   alt={`${s.title} work ${idx}`}
                                   className="h-full w-full object-cover transition-transform duration-500 group-hover/img:scale-105"
                                 />
