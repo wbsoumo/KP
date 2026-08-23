@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CtaLink, Magnetic, PlanetBody, Reveal, SectionHeading } from "@/components/kp/ui";
 import { Portfolio } from "@/components/kp/Portfolio";
+import { ServicesSection } from "@/components/site/sections";
 import { CREATORS, GROWTH_ORBIT, PHONE, PHONE_TEL, PLANETS, WHATSAPP } from "@/lib/kp-data";
 
 const TITLE = "Kreative Planet — Creativity Without Gravity";
@@ -339,6 +340,7 @@ function Index() {
       <Hero />
       <Planets />
       <BrandGrowthSection />
+      <ServicesSection />
       <GrowthOrbit />
       <FeaturedWork />
       <CreatorTeaser />
