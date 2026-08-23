@@ -146,24 +146,24 @@ export function ServicesSection() {
 
   const serviceWorks: Record<string, string[]> = {
     "social-media": [
-      "/social%20media/WhatsApp%20Image%202026-08-18%20at%2017.40.49.jpeg",
-      "/social%20media/WhatsApp%20Image%202026-08-18%20at%2018.05.08.jpeg",
-      "/social%20media/WhatsApp%20Image%202026-08-18%20at%2018.13.20.jpeg",
-      "/social%20media/WhatsApp%20Image%202026-08-18%20at%2018.16.52.jpeg",
-      "/social%20media/WhatsApp%20Image%202026-08-18%20at%2018.34.54.jpeg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505359/kreative-planet/social%20media/WhatsApp_Image_2026-08-18_at_17.40.49.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505361/kreative-planet/social%20media/WhatsApp_Image_2026-08-18_at_18.05.08.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505363/kreative-planet/social%20media/WhatsApp_Image_2026-08-18_at_18.13.20.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505364/kreative-planet/social%20media/WhatsApp_Image_2026-08-18_at_18.16.52.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505366/kreative-planet/social%20media/WhatsApp_Image_2026-08-18_at_18.34.54.jpg",
     ],
     "video-production": [
-      "/videos/IMG_1027.MP4",
-      "/videos/IMG_1028.MP4",
-      "/videos/IMG_4821.MP4",
-      "/videos/export-1787053026138.mp4",
+      "https://res.cloudinary.com/dt02mpeqj/video/upload/v1787505088/kreative-planet/videos/IMG_1027.mp4",
+      "https://res.cloudinary.com/dt02mpeqj/video/upload/v1787505090/kreative-planet/videos/IMG_1028.mp4",
+      "https://res.cloudinary.com/dt02mpeqj/video/upload/v1787505150/kreative-planet/videos/IMG_4821.mp4",
+      "https://res.cloudinary.com/dt02mpeqj/video/upload/v1787505200/kreative-planet/videos/export-1787053026138.mp4",
     ],
     "creative-advertising": [
-      "/creative/IMG_1029.MP4",
-      "/creative/WhatsApp%20Image%202026-08-18%20at%2018.39.40.jpeg",
-      "/creative/WhatsApp%20Image%202026-08-18%20at%2018.40.17.jpeg",
-      "/creative/WhatsApp%20Image%202026-08-18%20at%2018.40.59.jpeg",
-      "/creative/WhatsApp%20Image%202026-08-18%20at%2018.44.54.jpeg",
+      "https://res.cloudinary.com/dt02mpeqj/video/upload/v1787505250/kreative-planet/creative/IMG_1029.mp4",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505288/kreative-planet/creative/WhatsApp_Image_2026-08-18_at_18.39.40.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505290/kreative-planet/creative/WhatsApp_Image_2026-08-18_at_18.40.17.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505293/kreative-planet/creative/WhatsApp_Image_2026-08-18_at_18.40.59.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505296/kreative-planet/creative/WhatsApp_Image_2026-08-18_at_18.44.54.jpg",
     ],
     "website-seo": [
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80",
@@ -172,16 +172,16 @@ export function ServicesSection() {
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80",
     ],
     "creator-management": [
-      "/creator/WhatsApp%20Image%202026-08-18%20at%2018.53.05.jpeg",
-      "/creator/WhatsApp%20Image%202026-08-18%20at%2018.53.06.jpeg",
-      "/creator/WhatsApp%20Image%202026-08-18%20at%2018.53.061.jpeg",
-      "/creator/WhatsApp%20Image%202026-08-18%20at%2018.54.56.jpeg",
-      "/creator/WhatsApp%20Image%202026-08-18%20at%20218.53.06.jpeg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505367/kreative-planet/creator/WhatsApp_Image_2026-08-18_at_18.53.05.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505369/kreative-planet/creator/WhatsApp_Image_2026-08-18_at_18.53.06.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505371/kreative-planet/creator/WhatsApp_Image_2026-08-18_at_18.53.061.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505372/kreative-planet/creator/WhatsApp_Image_2026-08-18_at_18.54.56.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505374/kreative-planet/creator/WhatsApp_Image_2026-08-18_at_218.53.06.jpg",
     ],
     "collaborations": [
-      "/brand/WhatsApp%20Image%202026-08-18%20at%2018.47.37.jpeg",
-      "/brand/WhatsApp%20Image%202026-08-18%20at%2018.48.49.jpeg",
-      "/brand/simran.jpeg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787506363/kreative-planet/brand/WhatsApp_Image_2026-08-18_at_18.47.37.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505438/kreative-planet/brand/WhatsApp_Image_2026-08-18_at_18.48.49.jpg",
+      "https://res.cloudinary.com/dt02mpeqj/image/upload/v1787505439/kreative-planet/brand/simran.jpg",
     ],
   };
 
