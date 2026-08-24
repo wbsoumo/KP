@@ -16,6 +16,7 @@ import { Route as CreatorsRouteImport } from './routes/creators'
 import { Route as KpStudioX9z72qRouteImport } from './routes/kp-studio-x9z72q'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as WorkRouteImport } from './routes/work'
+import { Route as CreatorsIndexRouteImport } from './routes/creators.index'
 import { Route as CreatorsDashboardRouteImport } from './routes/creators.dashboard'
 import { Route as CreatorsJoinRouteImport } from './routes/creators.join'
 import { Route as CreatorsLoginRouteImport } from './routes/creators.login'
@@ -57,6 +58,11 @@ const WorkRoute = WorkRouteImport.update({
   path: '/work',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CreatorsIndexRoute = CreatorsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CreatorsRoute,
+} as any)
 const CreatorsDashboardRoute = CreatorsDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -95,19 +101,20 @@ export interface FileRoutesByFullPath {
   '/creators/join': typeof CreatorsJoinRoute
   '/creators/login': typeof CreatorsLoginRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/creators/': typeof CreatorsIndexRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/creators': typeof CreatorsRouteWithChildren
   '/kp-studio-x9z72q': typeof KpStudioX9z72qRoute
   '/services': typeof ServicesRoute
   '/creators/dashboard': typeof CreatorsDashboardRoute
   '/creators/join': typeof CreatorsJoinRoute
   '/creators/login': typeof CreatorsLoginRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/creators': typeof CreatorsIndexRoute
   '/work': typeof WorkIndexRoute
 }
 export interface FileRoutesById {
@@ -123,6 +130,7 @@ export interface FileRoutesById {
   '/creators/join': typeof CreatorsJoinRoute
   '/creators/login': typeof CreatorsLoginRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/creators/': typeof CreatorsIndexRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRouteTypes {
@@ -139,19 +147,20 @@ export interface FileRouteTypes {
     | '/creators/join'
     | '/creators/login'
     | '/work/$slug'
+    | '/creators/'
     | '/work/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/contact'
-    | '/creators'
     | '/kp-studio-x9z72q'
     | '/services'
     | '/creators/dashboard'
     | '/creators/join'
     | '/creators/login'
     | '/work/$slug'
+    | '/creators'
     | '/work'
   id:
     | '__root__'
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/creators/join'
     | '/creators/login'
     | '/work/$slug'
+    | '/creators/'
     | '/work/'
   fileRoutesById: FileRoutesById
 }
@@ -230,6 +240,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/creators/': {
+      id: '/creators/'
+      path: '/'
+      fullPath: '/creators/'
+      preLoaderRoute: typeof CreatorsIndexRouteImport
+      parentRoute: typeof CreatorsRoute
+    }
     '/creators/dashboard': {
       id: '/creators/dashboard'
       path: '/dashboard'
@@ -272,12 +289,14 @@ interface CreatorsRouteChildren {
   CreatorsDashboardRoute: typeof CreatorsDashboardRoute
   CreatorsJoinRoute: typeof CreatorsJoinRoute
   CreatorsLoginRoute: typeof CreatorsLoginRoute
+  CreatorsIndexRoute: typeof CreatorsIndexRoute
 }
 
 const CreatorsRouteChildren: CreatorsRouteChildren = {
   CreatorsDashboardRoute: CreatorsDashboardRoute,
   CreatorsJoinRoute: CreatorsJoinRoute,
   CreatorsLoginRoute: CreatorsLoginRoute,
+  CreatorsIndexRoute: CreatorsIndexRoute,
 }
 
 const CreatorsRouteWithChildren = CreatorsRoute._addFileChildren(

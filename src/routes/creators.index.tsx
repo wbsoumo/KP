@@ -1,27 +1,10 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Sparkles, ArrowRight, Video, TrendingUp, Users, CheckCircle2 } from "lucide-react";
+import { Reveal } from "@/components/kp/ui";
 
-export const Route = createFileRoute("/creators")({
-  head: () => ({
-    meta: [
-      { title: "Kreative Planet Creator Network — Create. Grow. Connect." },
-      {
-        name: "description",
-        content:
-          "Creative support, growth guidance and brand collaboration opportunities for creators. Join the Kreative Planet Creator Network.",
-      },
-      { property: "og:title", content: "Kreative Planet Creator Network — Create. Grow. Connect." },
-      {
-        property: "og:description",
-        content: "Creative support, growth guidance and brand collaboration opportunities for creators.",
-      },
-    ],
-  }),
-  component: CreatorsLayout,
+export const Route = createFileRoute("/creators/")({
+  component: CreatorsLandingPage,
 });
-
-function CreatorsLayout() {
-  return <Outlet />;
-}
 
 function CreatorsLandingPage() {
   return (
