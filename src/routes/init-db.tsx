@@ -22,12 +22,20 @@ function InitDbPage() {
 
     try {
       const res = await fetch("/api/creators?action=init_db");
-      const data = await res.json().catch(() => null);
+      const text = await res.text();
+      let data: any = null;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        data = { error: text };
+      }
+
       if (res.ok && data?.success) {
         setMessage(data.message || "MySQL database table 'creators' initialized successfully!");
         setStatus("success");
       } else {
-        throw new Error(data?.error || `HTTP ${res.status}: Access denied for MySQL user 'taskbaz3_kp' or connection timed out.`);
+        const errDetail = data?.error || data?.message || (typeof data === "string" ? data : `HTTP ${res.status}`);
+        throw new Error(errDetail);
       }
     } catch (err) {
       setStatus("error");
