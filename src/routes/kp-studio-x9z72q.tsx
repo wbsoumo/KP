@@ -9,6 +9,7 @@ import {
   type AspectRatioType,
 } from "@/lib/gallery-store";
 import {
+  fetchCreatorsFromAPI,
   getStoredCreators,
   saveStoredCreators,
   type CreatorData,
@@ -311,10 +312,36 @@ function AdminPage() {
     );
   }
 
-  const handleStatusChange = (id: string, newStatus: CreatorData["status"]) => {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const session = localStorage.getItem("kp_admin_auth");
+      if (session === "true") {
+        setIsAuthenticated(true);
+        setItems(getStoredMediaGallery());
+        fetchCreatorsFromAPI().then((list) => setCreators(list));
+      }
+      const handleCreatorsUpdate = () => {
+        fetchCreatorsFromAPI().then((list) => setCreators(list));
+      };
+      window.addEventListener("kp_creators_updated", handleCreatorsUpdate);
+      return () => window.removeEventListener("kp_creators_updated", handleCreatorsUpdate);
+    }
+  }, []);
+
+  const handleStatusChange = async (id: string, newStatus: CreatorData["status"]) => {
     const updated = creators.map((c) => (c.id === id ? { ...c, status: newStatus } : c));
     setCreators(updated);
     saveStoredCreators(updated);
+
+    try {
+      await fetch("/api/creators", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "update_status", id, status: newStatus }),
+      });
+    } catch (err) {
+      console.warn("Failed updating status in Vercel DB:", err);
+    }
   };
 
   const handleDeleteCreator = (id: string) => {

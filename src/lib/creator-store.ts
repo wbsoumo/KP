@@ -80,6 +80,24 @@ export const INITIAL_CREATORS: CreatorData[] = [
   },
 ];
 
+export async function fetchCreatorsFromAPI(): Promise<CreatorData[]> {
+  try {
+    const res = await fetch("/api/creators");
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && Array.isArray(data.creators) && data.creators.length > 0) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem(STORAGE_KEY_CREATORS, JSON.stringify(data.creators));
+        }
+        return data.creators;
+      }
+    }
+  } catch (err) {
+    console.warn("API fetch creators fallback:", err);
+  }
+  return getStoredCreators();
+}
+
 export function getStoredCreators(): CreatorData[] {
   if (typeof window === "undefined") return INITIAL_CREATORS;
   try {
