@@ -27,32 +27,28 @@ async function getPool() {
 
 export async function initMySQLDatabase() {
   if (typeof window !== "undefined") return;
-  try {
-    const p = await getPool();
-    if (!p) return;
-    await p.query(`
-      CREATE TABLE IF NOT EXISTS creators (
-        id VARCHAR(255) PRIMARY KEY,
-        full_name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        phone VARCHAR(255) NOT NULL,
-        instagram_handle VARCHAR(255) NOT NULL,
-        instagram_followers VARCHAR(255),
-        category VARCHAR(255) NOT NULL,
-        managed_by VARCHAR(50) NOT NULL,
-        manager_name VARCHAR(255),
-        manager_contact VARCHAR(255),
-        remarks TEXT,
-        password_hash VARCHAR(255) NOT NULL,
-        status VARCHAR(50) NOT NULL DEFAULT 'pending',
-        metrics JSON,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-    `);
-    console.log("MySQL creators table initialized successfully!");
-  } catch (err) {
-    console.warn("MySQL database table init warning:", err);
-  }
+  const p = await getPool();
+  if (!p) return;
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS creators (
+      id VARCHAR(255) PRIMARY KEY,
+      full_name VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      phone VARCHAR(255) NOT NULL,
+      instagram_handle VARCHAR(255) NOT NULL,
+      instagram_followers VARCHAR(255),
+      category VARCHAR(255) NOT NULL,
+      managed_by VARCHAR(50) NOT NULL,
+      manager_name VARCHAR(255),
+      manager_contact VARCHAR(255),
+      remarks TEXT,
+      password_hash VARCHAR(255) NOT NULL,
+      status VARCHAR(50) NOT NULL DEFAULT 'pending',
+      metrics JSON,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+  console.log("MySQL creators table initialized successfully!");
 }
 
 export async function fetchCreatorsFromMySQL(): Promise<CreatorData[]> {
