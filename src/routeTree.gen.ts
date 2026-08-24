@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CreatorsRouteImport } from './routes/creators'
+import { Route as InitDbRouteImport } from './routes/init-db'
 import { Route as KpStudioX9z72qRouteImport } from './routes/kp-studio-x9z72q'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as WorkRouteImport } from './routes/work'
@@ -41,6 +42,11 @@ const ContactRoute = ContactRouteImport.update({
 const CreatorsRoute = CreatorsRouteImport.update({
   id: '/creators',
   path: '/creators',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InitDbRoute = InitDbRouteImport.update({
+  id: '/init-db',
+  path: '/init-db',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KpStudioX9z72qRoute = KpStudioX9z72qRouteImport.update({
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/creators': typeof CreatorsRouteWithChildren
+  '/init-db': typeof InitDbRoute
   '/kp-studio-x9z72q': typeof KpStudioX9z72qRoute
   '/services': typeof ServicesRoute
   '/work': typeof WorkRouteWithChildren
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/init-db': typeof InitDbRoute
   '/kp-studio-x9z72q': typeof KpStudioX9z72qRoute
   '/services': typeof ServicesRoute
   '/creators/dashboard': typeof CreatorsDashboardRoute
@@ -123,6 +131,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/creators': typeof CreatorsRouteWithChildren
+  '/init-db': typeof InitDbRoute
   '/kp-studio-x9z72q': typeof KpStudioX9z72qRoute
   '/services': typeof ServicesRoute
   '/work': typeof WorkRouteWithChildren
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/creators'
+    | '/init-db'
     | '/kp-studio-x9z72q'
     | '/services'
     | '/work'
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/init-db'
     | '/kp-studio-x9z72q'
     | '/services'
     | '/creators/dashboard'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/creators'
+    | '/init-db'
     | '/kp-studio-x9z72q'
     | '/services'
     | '/work'
@@ -184,6 +196,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   CreatorsRoute: typeof CreatorsRouteWithChildren
+  InitDbRoute: typeof InitDbRoute
   KpStudioX9z72qRoute: typeof KpStudioX9z72qRoute
   ServicesRoute: typeof ServicesRoute
   WorkRoute: typeof WorkRouteWithChildren
@@ -217,6 +230,13 @@ declare module '@tanstack/react-router' {
       path: '/creators'
       fullPath: '/creators'
       preLoaderRoute: typeof CreatorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/init-db': {
+      id: '/init-db'
+      path: '/init-db'
+      fullPath: '/init-db'
+      preLoaderRoute: typeof InitDbRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kp-studio-x9z72q': {
@@ -320,6 +340,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   CreatorsRoute: CreatorsRouteWithChildren,
+  InitDbRoute: InitDbRoute,
   KpStudioX9z72qRoute: KpStudioX9z72qRoute,
   ServicesRoute: ServicesRoute,
   WorkRoute: WorkRouteWithChildren,
