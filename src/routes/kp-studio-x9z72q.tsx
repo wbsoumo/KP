@@ -77,9 +77,11 @@ function AdminPage() {
       if (session === "true") {
         setIsAuthenticated(true);
         setItems(getStoredMediaGallery());
-        setCreators(getStoredCreators());
+        fetchCreatorsFromAPI().then((list) => setCreators(list));
       }
-      const handleCreatorsUpdate = () => setCreators(getStoredCreators());
+      const handleCreatorsUpdate = () => {
+        fetchCreatorsFromAPI().then((list) => setCreators(list));
+      };
       window.addEventListener("kp_creators_updated", handleCreatorsUpdate);
       return () => window.removeEventListener("kp_creators_updated", handleCreatorsUpdate);
     }
@@ -312,21 +314,7 @@ function AdminPage() {
     );
   }
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const session = localStorage.getItem("kp_admin_auth");
-      if (session === "true") {
-        setIsAuthenticated(true);
-        setItems(getStoredMediaGallery());
-        fetchCreatorsFromAPI().then((list) => setCreators(list));
-      }
-      const handleCreatorsUpdate = () => {
-        fetchCreatorsFromAPI().then((list) => setCreators(list));
-      };
-      window.addEventListener("kp_creators_updated", handleCreatorsUpdate);
-      return () => window.removeEventListener("kp_creators_updated", handleCreatorsUpdate);
-    }
-  }, []);
+
 
   const handleStatusChange = async (id: string, newStatus: CreatorData["status"]) => {
     const updated = creators.map((c) => (c.id === id ? { ...c, status: newStatus } : c));
