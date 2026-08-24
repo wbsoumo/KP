@@ -1,10 +1,9 @@
-import { sql } from "@vercel/postgres";
-import { kv } from "@vercel/kv";
 import { type CreatorData } from "@/lib/creator-store";
 
 export async function initCreatorTable() {
   try {
-    if (process.env.POSTGRES_URL || process.env.VERCEL_POSTGRES_URL) {
+    if (typeof window === "undefined" && (process.env.POSTGRES_URL || process.env.VERCEL_POSTGRES_URL)) {
+      const { sql } = await import("@vercel/postgres");
       await sql`
         CREATE TABLE IF NOT EXISTS creators (
           id VARCHAR(255) PRIMARY KEY,
@@ -31,10 +30,13 @@ export async function initCreatorTable() {
 }
 
 export async function fetchCreatorsFromVercelDB(): Promise<CreatorData[]> {
+  if (typeof window !== "undefined") return [];
+
   try {
     // 1. Try Vercel Postgres SQL Database first
     if (process.env.POSTGRES_URL || process.env.VERCEL_POSTGRES_URL || process.env.POSTGRES_URL_NON_POOLING) {
       await initCreatorTable();
+      const { sql } = await import("@vercel/postgres");
       const { rows } = await sql`SELECT * FROM creators ORDER BY created_at DESC;`;
       if (rows && rows.length > 0) {
         return rows.map((r) => ({
@@ -63,6 +65,7 @@ export async function fetchCreatorsFromVercelDB(): Promise<CreatorData[]> {
   try {
     // 2. Try Vercel KV (Key-Value Redis Database)
     if (process.env.KV_REST_API_URL || process.env.VERCEL_KV_REST_API_URL) {
+      const { kv } = await import("@vercel/kv");
       const creators = await kv.get<CreatorData[]>("kp_creators_list");
       if (creators && Array.isArray(creators)) {
         return creators;
@@ -76,12 +79,14 @@ export async function fetchCreatorsFromVercelDB(): Promise<CreatorData[]> {
 }
 
 export async function saveCreatorToVercelDB(creator: CreatorData): Promise<boolean> {
+  if (typeof window !== "undefined") return false;
   let isSaved = false;
 
   // 1. Save to Vercel Postgres
   try {
     if (process.env.POSTGRES_URL || process.env.VERCEL_POSTGRES_URL || process.env.POSTGRES_URL_NON_POOLING) {
       await initCreatorTable();
+      const { sql } = await import("@vercel/postgres");
       await sql`
         INSERT INTO creators (
           id, full_name, email, phone, instagram_handle, instagram_followers, category,
@@ -115,6 +120,7 @@ export async function saveCreatorToVercelDB(creator: CreatorData): Promise<boole
   // 2. Backup / Sync to Vercel KV Database
   try {
     if (process.env.KV_REST_API_URL || process.env.VERCEL_KV_REST_API_URL) {
+      const { kv } = await import("@vercel/kv");
       const existing = (await kv.get<CreatorData[]>("kp_creators_list")) || [];
       const updated = [creator, ...existing.filter((c) => c.id !== creator.id)];
       await kv.set("kp_creators_list", updated);
@@ -128,8 +134,10 @@ export async function saveCreatorToVercelDB(creator: CreatorData): Promise<boole
 }
 
 export async function updateCreatorStatusInVercelDB(id: string, status: string): Promise<boolean> {
+  if (typeof window !== "undefined") return false;
   try {
     if (process.env.POSTGRES_URL || process.env.VERCEL_POSTGRES_URL || process.env.POSTGRES_URL_NON_POOLING) {
+      const { sql } = await import("@vercel/postgres");
       await sql`UPDATE creators SET status = ${status} WHERE id = ${id};`;
       return true;
     }
