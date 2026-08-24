@@ -143,7 +143,7 @@ function Planets() {
 
 function BrandGrowthSection() {
   return (
-    <section className="px-5 py-24 md:px-10 md:py-32 border-t border-white/10 bg-card/30">
+    <section className="px-5 pt-20 pb-8 md:px-10 md:pt-28 md:pb-10 border-t border-white/10 bg-card/30">
       <div className="mx-auto max-w-[1400px]">
         <SectionHeading
           eyebrow="Capabilities & Showcase"
@@ -350,7 +350,7 @@ function Index() {
       <FeaturedWork />
       <Planets />
       <BrandGrowthSection />
-      <ServicesSection />
+      <ServicesSection hideHeader className="pt-0 pb-20 md:pb-28 bg-card/30" />
       <GrowthOrbit />
       <CreatorTeaser />
       <ContactBand />

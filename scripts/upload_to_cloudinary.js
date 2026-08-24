@@ -31,7 +31,7 @@ async function uploadFile(filePath, relativePath) {
         result = await new Promise((resolve, reject) => {
           cloudinary.uploader.upload_large(
             filePath,
-            { ...options, chunk_size: 6000000 },
+            { ...options, chunk_size: 4000000 },
             (error, res) => {
               if (error) reject(error);
               else resolve(res);

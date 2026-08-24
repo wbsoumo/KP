@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Upload, Trash2, LogOut, CheckCircle2, Lock, Video, Image as ImageIcon } from "lucide-react";
+import { Upload, Trash2, LogOut, CheckCircle2, Lock, Video, Edit3, X, Image as ImageIcon } from "lucide-react";
 import { SectionHeading } from "@/components/kp/ui";
 import {
   getStoredMediaGallery,
   saveStoredMediaGallery,
   type MediaItem,
+  type AspectRatioType,
 } from "@/lib/gallery-store";
 
 export const Route = createFileRoute("/kp-studio-x9z72q")({
@@ -26,6 +27,14 @@ const CATEGORIES = [
   "CREATOR CAMPAIGNS",
 ] as const;
 
+const ASPECT_RATIOS: { label: string; value: AspectRatioType }[] = [
+  { label: "Reel / Story (9:16 Vertical)", value: "reel" },
+  { label: "Portrait / Feed (4:5 Ratio)", value: "portrait" },
+  { label: "Square Post (1:1 Square)", value: "square" },
+  { label: "Landscape / Desktop (16:9)", value: "landscape" },
+  { label: "Auto Fit (Full Image / Contain)", value: "auto" },
+];
+
 function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState("");
@@ -36,10 +45,19 @@ function AdminPage() {
   // Form State for uploading new item
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>("VIDEO");
+  const [aspectRatio, setAspectRatio] = useState<AspectRatioType>("reel");
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  // Edit Modal State
+  const [editingItem, setEditingItem] = useState<MediaItem | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editCategory, setEditCategory] = useState<string>("VIDEO");
+  const [editAspectRatio, setEditAspectRatio] = useState<AspectRatioType>("reel");
+  const [editType, setEditType] = useState<"video" | "image">("image");
+  const [editUrl, setEditUrl] = useState("");
 
   // Gallery items list
   const [items, setItems] = useState<MediaItem[]>([]);
@@ -74,7 +92,6 @@ function AdminPage() {
         console.warn("API route fallback:", err);
       }
 
-      // Backup check if static host / client router
       if (!isSuccess && username === "admin" && password === "kreative2026") {
         isSuccess = true;
       }
@@ -113,7 +130,6 @@ function AdminPage() {
       const isVid = file.type.startsWith("video") || file.name.toLowerCase().endsWith(".mp4") || file.name.toLowerCase().endsWith(".mov");
       const folderName = isVid ? "kreative-planet/videos" : "kreative-planet/uploads";
 
-      // 1. Get Signature or use direct Cloudinary Upload Preset
       let cloudName = "dt02mpeqj";
       let apiKey = "485515273593933";
       let signature = "";
@@ -138,7 +154,6 @@ function AdminPage() {
         console.warn("Signature fetch fallback:", err);
       }
 
-      // 2. Upload to Cloudinary
       setUploadProgress(`Uploading ${file.name} directly to Cloudinary CDN...`);
       const formData = new FormData();
       formData.append("file", file);
@@ -166,20 +181,20 @@ function AdminPage() {
         throw new Error(uploadData.error?.message || "Cloudinary upload failed.");
       }
 
-      // 3. Save new item into gallery store
       const newItem: MediaItem = {
         id: `item-${Date.now()}`,
         type: isVid ? "video" : "image",
         url: uploadData.secure_url,
         title: title.trim(),
         category,
+        aspectRatio,
       };
 
       const updated = [newItem, ...items];
       setItems(updated);
       saveStoredMediaGallery(updated);
 
-      setSuccessMessage(`Successfully uploaded "${title}" to Cloudinary!`);
+      setSuccessMessage(`Successfully uploaded "${title}"!`);
       setTitle("");
       setFile(null);
     } catch (err) {
@@ -196,6 +211,37 @@ function AdminPage() {
       setItems(updated);
       saveStoredMediaGallery(updated);
     }
+  };
+
+  const openEditModal = (item: MediaItem) => {
+    setEditingItem(item);
+    setEditTitle(item.title);
+    setEditCategory(item.category);
+    setEditAspectRatio(item.aspectRatio || "reel");
+    setEditType(item.type);
+    setEditUrl(item.url);
+  };
+
+  const handleSaveEdit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingItem) return;
+
+    const updated = items.map((it) =>
+      it.id === editingItem.id
+        ? {
+            ...it,
+            title: editTitle.trim(),
+            category: editCategory,
+            aspectRatio: editAspectRatio,
+            type: editType,
+            url: editUrl.trim(),
+          }
+        : it
+    );
+
+    setItems(updated);
+    saveStoredMediaGallery(updated);
+    setEditingItem(null);
   };
 
   if (!isAuthenticated) {
@@ -310,6 +356,21 @@ function AdminPage() {
               </div>
 
               <div>
+                <label className="kp-eyebrow mb-2 block">Photo / Video Display Size (Aspect Ratio)</label>
+                <select
+                  value={aspectRatio}
+                  onChange={(e) => setAspectRatio(e.target.value as AspectRatioType)}
+                  className="w-full rounded-xl border border-white/15 bg-background/80 px-4 py-3 text-sm text-foreground focus:border-kp-pink focus:outline-none"
+                >
+                  {ASPECT_RATIOS.map((opt) => (
+                    <option key={opt.value} value={opt.value} className="bg-card text-foreground">
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
                 <label className="kp-eyebrow mb-2 block">Select Video or Image File</label>
                 <input
                   type="file"
@@ -371,22 +432,135 @@ function AdminPage() {
                   <div className="flex-1 min-w-0">
                     <span className="kp-eyebrow text-[0.6rem] text-kp-orange">{item.category}</span>
                     <h4 className="truncate text-sm font-bold uppercase">{item.title}</h4>
-                    <p className="truncate text-[0.65rem] text-muted-foreground">{item.type.toUpperCase()}</p>
+                    <p className="truncate text-[0.65rem] text-muted-foreground uppercase">
+                      {item.type} · Ratio: {item.aspectRatio || "reel"}
+                    </p>
                   </div>
 
-                  <button
-                    onClick={() => handleDelete(item.id)}
-                    className="rounded-lg p-2 text-muted-foreground hover:bg-red-500/20 hover:text-red-400 transition-colors"
-                    title="Delete item"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => openEditModal(item)}
+                      className="rounded-lg p-2 text-muted-foreground hover:bg-white/10 hover:text-white transition-colors"
+                      title="Edit upload options"
+                    >
+                      <Edit3 className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(item.id)}
+                      className="rounded-lg p-2 text-muted-foreground hover:bg-red-500/20 hover:text-red-400 transition-colors"
+                      title="Delete item"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Edit Options Modal */}
+      {editingItem && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+          <div className="kp-hairline w-full max-w-lg rounded-3xl bg-card p-6 shadow-2xl space-y-5">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <h3 className="text-xl font-bold uppercase flex items-center gap-2">
+                <Edit3 className="h-5 w-5 text-kp-pink" /> Edit Upload Options
+              </h3>
+              <button
+                onClick={() => setEditingItem(null)}
+                className="rounded-full p-2 text-muted-foreground hover:bg-white/10 hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="space-y-4">
+              <div>
+                <label className="kp-eyebrow mb-1.5 block">Title</label>
+                <input
+                  type="text"
+                  required
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  className="w-full rounded-xl border border-white/15 bg-background/80 px-4 py-2.5 text-sm text-foreground focus:border-kp-pink focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="kp-eyebrow mb-1.5 block">Category</label>
+                <select
+                  value={editCategory}
+                  onChange={(e) => setEditCategory(e.target.value)}
+                  className="w-full rounded-xl border border-white/15 bg-background/80 px-4 py-2.5 text-sm text-foreground focus:border-kp-pink focus:outline-none"
+                >
+                  {CATEGORIES.map((c) => (
+                    <option key={c} value={c} className="bg-card text-foreground">
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="kp-eyebrow mb-1.5 block">Display Size / Aspect Ratio</label>
+                <select
+                  value={editAspectRatio}
+                  onChange={(e) => setEditAspectRatio(e.target.value as AspectRatioType)}
+                  className="w-full rounded-xl border border-white/15 bg-background/80 px-4 py-2.5 text-sm text-foreground focus:border-kp-pink focus:outline-none"
+                >
+                  {ASPECT_RATIOS.map((opt) => (
+                    <option key={opt.value} value={opt.value} className="bg-card text-foreground">
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="kp-eyebrow mb-1.5 block">Media Type</label>
+                <select
+                  value={editType}
+                  onChange={(e) => setEditType(e.target.value as "video" | "image")}
+                  className="w-full rounded-xl border border-white/15 bg-background/80 px-4 py-2.5 text-sm text-foreground focus:border-kp-pink focus:outline-none"
+                >
+                  <option value="image" className="bg-card text-foreground">Image</option>
+                  <option value="video" className="bg-card text-foreground">Video</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="kp-eyebrow mb-1.5 block">Media URL</label>
+                <input
+                  type="text"
+                  required
+                  value={editUrl}
+                  onChange={(e) => setEditUrl(e.target.value)}
+                  className="w-full rounded-xl border border-white/15 bg-background/80 px-4 py-2.5 text-xs text-foreground focus:border-kp-pink focus:outline-none"
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setEditingItem(null)}
+                  className="rounded-xl px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:bg-white/10 hover:text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="kp-gradient-bg rounded-xl px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-white shadow-[var(--glow-kp)] hover:brightness-110"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
+

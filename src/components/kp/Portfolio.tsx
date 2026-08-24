@@ -6,6 +6,22 @@ import { getStoredMediaGallery, type MediaItem } from "@/lib/gallery-store";
 
 const CATEGORIES = ["ALL", "ADVERTISING", "BRANDING", "SOCIAL", "VIDEO", "CREATOR CAMPAIGNS"] as const;
 
+const getAspectClass = (ratio?: string) => {
+  switch (ratio) {
+    case "square":
+      return "aspect-square object-cover";
+    case "landscape":
+      return "aspect-[16/9] object-cover";
+    case "portrait":
+      return "aspect-[4/5] object-cover";
+    case "auto":
+      return "aspect-auto max-h-[500px] object-contain bg-black/80";
+    case "reel":
+    default:
+      return "aspect-[9/16] object-cover";
+  }
+};
+
 export function Portfolio({ compact = false }: { compact?: boolean }) {
   const [activeCategory, setActiveCategory] = useState<(typeof CATEGORIES)[number]>("ALL");
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -62,14 +78,14 @@ export function Portfolio({ compact = false }: { compact?: boolean }) {
       </div>
 
       {/* Grid of video & image media items */}
-      <div className="grid grid-cols-1 items-end gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
         {shownMedia.map((item, i) => (
           <Reveal key={item.id} delay={(i % 4) * 80}>
             <button
               onClick={() => setSelectedIndex(i)}
               className="group relative block w-full text-left overflow-hidden rounded-2xl kp-hairline bg-card/60 transition-transform duration-500 hover:-translate-y-2 focus:outline-none"
             >
-              <div className="relative aspect-[9/16] w-full overflow-hidden bg-black/40">
+              <div className={`relative w-full overflow-hidden bg-black/40 ${getAspectClass(item.aspectRatio)}`}>
                 {item.type === "video" ? (
                   <video
                     src={item.url}
@@ -85,7 +101,7 @@ export function Portfolio({ compact = false }: { compact?: boolean }) {
                     src={item.url}
                     alt={item.title}
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className={`h-full w-full ${item.aspectRatio === "auto" ? "object-contain" : "object-cover"} transition-transform duration-700 group-hover:scale-105`}
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />

@@ -131,7 +131,13 @@ export function IntroStrip() {
   );
 }
 
-export function ServicesSection() {
+export function ServicesSection({
+  hideHeader = false,
+  className = "",
+}: {
+  hideHeader?: boolean;
+  className?: string;
+}) {
   const [activeService, setActiveService] = useState(0);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, startIndex: 0 });
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -211,21 +217,23 @@ export function ServicesSection() {
   }, [emblaApi]);
 
   return (
-    <section id="services" className="px-5 py-24 sm:px-8 sm:py-32">
+    <section id="services" className={`px-5 py-24 sm:px-8 sm:py-32 ${className}`}>
       <div className="mx-auto max-w-[1400px]">
-        <SectionHead
-          eyebrow="Services"
-          title={
-            <>
-              Everything your brand
-              <br />
-              needs to <span className="kp-gradient-text">grow.</span>
-            </>
-          }
-        />
+        {!hideHeader && (
+          <SectionHead
+            eyebrow="Services"
+            title={
+              <>
+                Everything your brand
+                <br />
+                needs to <span className="kp-gradient-text">grow.</span>
+              </>
+            }
+          />
+        )}
 
         {/* Row of Tabs */}
-        <div className="mt-12 flex flex-wrap justify-center gap-3 md:justify-start">
+        <div className={`${hideHeader ? "mt-4" : "mt-12"} flex flex-wrap justify-center gap-3 md:justify-start`}>
           {services.map((s, i) => {
             const isActive = activeService === i;
             return (
