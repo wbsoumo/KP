@@ -84,15 +84,21 @@ export const APIRoute = createAPIFileRoute("/api/creators")({
       };
 
       // Save to MySQL Database
-      await saveCreatorToMySQL(newCreator);
+      const saved = await saveCreatorToMySQL(newCreator);
+      if (!saved) {
+        return new Response(
+          JSON.stringify({ success: false, error: "MySQL saveCreatorToMySQL returned false. Check table schema or host connection." }),
+          { status: 500, headers: { "Content-Type": "application/json" } }
+        );
+      }
 
       return new Response(
         JSON.stringify({ success: true, creator: newCreator }),
         { headers: { "Content-Type": "application/json" } }
       );
-    } catch {
+    } catch (err: any) {
       return new Response(
-        JSON.stringify({ success: false, error: "Server error processing registration in MySQL DB." }),
+        JSON.stringify({ success: false, error: err?.message || err?.sqlMessage || "Server error processing registration in MySQL DB." }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }

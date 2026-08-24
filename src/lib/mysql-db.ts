@@ -89,64 +89,54 @@ export async function fetchCreatorsFromMySQL(): Promise<CreatorData[]> {
 export async function saveCreatorToMySQL(creator: CreatorData): Promise<boolean> {
   if (typeof window !== "undefined") return false;
 
-  try {
-    const p = await getPool();
-    if (!p) return false;
-    await initMySQLDatabase();
+  const p = await getPool();
+  if (!p) throw new Error("Could not initialize MySQL connection pool.");
+  await initMySQLDatabase();
 
-    const sql = `
-      INSERT INTO creators (
-        id, full_name, email, phone, instagram_handle, instagram_followers, category,
-        managed_by, manager_name, manager_contact, remarks, password_hash, status, metrics, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-      ON DUPLICATE KEY UPDATE
-        full_name = VALUES(full_name),
-        email = VALUES(email),
-        phone = VALUES(phone),
-        instagram_handle = VALUES(instagram_handle),
-        category = VALUES(category),
-        managed_by = VALUES(managed_by),
-        manager_name = VALUES(manager_name),
-        manager_contact = VALUES(manager_contact),
-        remarks = VALUES(remarks),
-        status = VALUES(status),
-        metrics = VALUES(metrics);
-    `;
+  const sql = `
+    INSERT INTO creators (
+      id, full_name, email, phone, instagram_handle, instagram_followers, category,
+      managed_by, manager_name, manager_contact, remarks, password_hash, status, metrics, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+    ON DUPLICATE KEY UPDATE
+      full_name = VALUES(full_name),
+      email = VALUES(email),
+      phone = VALUES(phone),
+      instagram_handle = VALUES(instagram_handle),
+      category = VALUES(category),
+      managed_by = VALUES(managed_by),
+      manager_name = VALUES(manager_name),
+      manager_contact = VALUES(manager_contact),
+      remarks = VALUES(remarks),
+      status = VALUES(status),
+      metrics = VALUES(metrics);
+  `;
 
-    await p.execute(sql, [
-      creator.id,
-      creator.fullName,
-      creator.email,
-      creator.phone,
-      creator.instagramHandle,
-      creator.instagramFollowers || "",
-      creator.category,
-      creator.managedBy,
-      creator.managerName || "",
-      creator.managerContact || "",
-      creator.remarks || "",
-      creator.passwordHash,
-      creator.status,
-      JSON.stringify(creator.metrics || {}),
-    ]);
+  await p.execute(sql, [
+    creator.id,
+    creator.fullName,
+    creator.email,
+    creator.phone,
+    creator.instagramHandle,
+    creator.instagramFollowers || "",
+    creator.category,
+    creator.managedBy,
+    creator.managerName || "",
+    creator.managerContact || "",
+    creator.remarks || "",
+    creator.passwordHash,
+    creator.status,
+    JSON.stringify(creator.metrics || {}),
+  ]);
 
-    return true;
-  } catch (err) {
-    console.warn("MySQL insert error:", err);
-    return false;
-  }
+  return true;
 }
 
 export async function updateCreatorStatusInMySQL(id: string, status: string): Promise<boolean> {
   if (typeof window !== "undefined") return false;
 
-  try {
-    const p = await getPool();
-    if (!p) return false;
-    await p.execute("UPDATE creators SET status = ? WHERE id = ?", [status, id]);
-    return true;
-  } catch (err) {
-    console.warn("MySQL update error:", err);
-    return false;
-  }
+  const p = await getPool();
+  if (!p) throw new Error("Could not initialize MySQL connection pool.");
+  await p.execute("UPDATE creators SET status = ? WHERE id = ?", [status, id]);
+  return true;
 }
