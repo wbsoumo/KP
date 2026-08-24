@@ -78,6 +78,9 @@ function AdminPage() {
         setItems(getStoredMediaGallery());
         setCreators(getStoredCreators());
       }
+      const handleCreatorsUpdate = () => setCreators(getStoredCreators());
+      window.addEventListener("kp_creators_updated", handleCreatorsUpdate);
+      return () => window.removeEventListener("kp_creators_updated", handleCreatorsUpdate);
     }
   }, []);
 
