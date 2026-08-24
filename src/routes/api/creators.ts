@@ -1,17 +1,17 @@
 import { createAPIFileRoute } from "@tanstack/react-start/api";
-import { fetchCreatorsFromVercelDB, saveCreatorToVercelDB, updateCreatorStatusInVercelDB } from "@/lib/vercel-db";
+import { fetchCreatorsFromMySQL, saveCreatorToMySQL, updateCreatorStatusInMySQL, initMySQLDatabase } from "@/lib/mysql-db";
 import { type CreatorData } from "@/lib/creator-store";
 
 export const APIRoute = createAPIFileRoute("/api/creators")({
   GET: async () => {
     try {
-      const creators = await fetchCreatorsFromVercelDB();
+      const creators = await fetchCreatorsFromMySQL();
       return new Response(JSON.stringify({ success: true, creators }), {
         headers: { "Content-Type": "application/json" },
       });
     } catch {
       return new Response(
-        JSON.stringify({ success: false, error: "Failed to fetch creators from Vercel Database." }),
+        JSON.stringify({ success: false, error: "Failed to fetch creators from MySQL Database." }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }
@@ -20,9 +20,16 @@ export const APIRoute = createAPIFileRoute("/api/creators")({
     try {
       const data = await request.json();
       
-      // Update action from Admin
+      // Init table or status update action from Admin
+      if (data.action === "init_db") {
+        await initMySQLDatabase();
+        return new Response(JSON.stringify({ success: true, message: "MySQL database table initialized." }), {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
       if (data.action === "update_status" && data.id && data.status) {
-        await updateCreatorStatusInVercelDB(data.id, data.status);
+        await updateCreatorStatusInMySQL(data.id, data.status);
         return new Response(JSON.stringify({ success: true }), {
           headers: { "Content-Type": "application/json" },
         });
@@ -61,8 +68,8 @@ export const APIRoute = createAPIFileRoute("/api/creators")({
         },
       };
 
-      // Save directly to Vercel Database
-      await saveCreatorToVercelDB(newCreator);
+      // Save to MySQL Database
+      await saveCreatorToMySQL(newCreator);
 
       return new Response(
         JSON.stringify({ success: true, creator: newCreator }),
@@ -70,7 +77,7 @@ export const APIRoute = createAPIFileRoute("/api/creators")({
       );
     } catch {
       return new Response(
-        JSON.stringify({ success: false, error: "Server error processing registration in Vercel DB." }),
+        JSON.stringify({ success: false, error: "Server error processing registration in MySQL DB." }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }
