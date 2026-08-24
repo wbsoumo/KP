@@ -218,8 +218,8 @@
 }
 
 @media (pointer: fine) {
-  .kp-cursor-active:not(:has(.fixed.z-\\[9999\\])),
-  .kp-cursor-active:not(:has(.fixed.z-\\[9999\\])) * {
+  .kp-cursor-active:not(:has(.fixed.z-\\[99999\\])),
+  .kp-cursor-active:not(:has(.fixed.z-\\[99999\\])) * {
     cursor: none !important;
   }
 }

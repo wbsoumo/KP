@@ -124,12 +124,15 @@ export function Portfolio({ compact = false }: { compact?: boolean }) {
       {/* Gallery Lightbox Popup Modal */}
       {selectedIndex !== null && (
         <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/92 backdrop-blur-xl p-4 sm:p-8 cursor-default"
-          style={{ cursor: "auto" }}
+          onClick={() => setSelectedIndex(null)}
+          className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 sm:p-8 select-none"
         >
           {/* Close button */}
           <button
-            onClick={() => setSelectedIndex(null)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedIndex(null);
+            }}
             className="absolute top-6 right-6 z-50 rounded-full border border-white/20 bg-background/80 p-3 text-white transition hover:bg-white/20 focus:outline-none cursor-pointer"
             aria-label="Close modal"
           >
@@ -138,11 +141,12 @@ export function Portfolio({ compact = false }: { compact?: boolean }) {
 
           {/* Previous item button */}
           <button
-            onClick={() =>
+            onClick={(e) => {
+              e.stopPropagation();
               setSelectedIndex((prev) =>
                 prev !== null && prev > 0 ? prev - 1 : shownMedia.length - 1
-              )
-            }
+              );
+            }}
             className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 z-50 rounded-full border border-white/20 bg-background/80 p-3 text-white transition hover:bg-white/20 focus:outline-none cursor-pointer"
             aria-label="Previous media"
           >
@@ -151,11 +155,12 @@ export function Portfolio({ compact = false }: { compact?: boolean }) {
 
           {/* Next item button */}
           <button
-            onClick={() =>
+            onClick={(e) => {
+              e.stopPropagation();
               setSelectedIndex((prev) =>
                 prev !== null && prev < shownMedia.length - 1 ? prev + 1 : 0
-              )
-            }
+              );
+            }}
             className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 z-50 rounded-full border border-white/20 bg-background/80 p-3 text-white transition hover:bg-white/20 focus:outline-none cursor-pointer"
             aria-label="Next media"
           >
@@ -163,23 +168,30 @@ export function Portfolio({ compact = false }: { compact?: boolean }) {
           </button>
 
           {/* Popup Content Container */}
-          <div className="relative max-h-[85vh] max-w-4xl w-full flex flex-col items-center justify-center">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-h-[85vh] max-w-4xl w-full flex flex-col items-center justify-center"
+          >
             {shownMedia[selectedIndex].type === "video" ? (
               <video
+                key={shownMedia[selectedIndex].url}
                 src={shownMedia[selectedIndex].url}
                 controls
                 autoPlay
-                className="max-h-[75vh] w-auto max-w-full rounded-2xl shadow-2xl border border-white/10 object-contain"
+                playsInline
+                preload="metadata"
+                className="max-h-[75vh] w-auto max-w-full rounded-2xl shadow-2xl border border-white/10 object-contain bg-black"
               />
             ) : (
               <img
+                key={shownMedia[selectedIndex].url}
                 src={shownMedia[selectedIndex].url}
                 alt={shownMedia[selectedIndex].title}
-                className="max-h-[75vh] w-auto max-w-full rounded-2xl shadow-2xl border border-white/10 object-contain"
+                className="max-h-[75vh] w-auto max-w-full rounded-2xl shadow-2xl border border-white/10 object-contain bg-black"
               />
             )}
 
-            <div className="mt-4 text-center">
+            <div className="mt-4 text-center pointer-events-auto">
               <span className="kp-eyebrow text-white/70">
                 {shownMedia[selectedIndex].category} · {selectedIndex + 1} of {shownMedia.length}
               </span>
