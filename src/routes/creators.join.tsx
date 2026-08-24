@@ -89,8 +89,8 @@ function CreatorJoinPage() {
       }
 
       setSuccessMsg(true);
-    } catch (err) {
-      setErrorMsg("Failed to register. Please try again.");
+    } catch (err: any) {
+      setErrorMsg(err?.message || "Failed to register. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
