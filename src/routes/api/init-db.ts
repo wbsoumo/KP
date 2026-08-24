@@ -12,9 +12,12 @@ export const APIRoute = createAPIFileRoute("/api/init-db")({
         }),
         { headers: { "Content-Type": "application/json" } }
       );
-    } catch (err) {
+    } catch (err: any) {
       return new Response(
-        JSON.stringify({ success: false, error: err instanceof Error ? err.message : "Database init error." }),
+        JSON.stringify({
+          success: false,
+          error: err?.message || err?.sqlMessage || "Database init error.",
+        }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }

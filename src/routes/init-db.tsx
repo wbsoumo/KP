@@ -21,21 +21,13 @@ function InitDbPage() {
     setMessage("Connecting to MySQL server (86.107.77.32)...");
 
     try {
-      const res = await fetch("/api/creators", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "init_db" }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success) {
-          setMessage("MySQL database table 'creators' initialized successfully!");
-          setStatus("success");
-        } else {
-          throw new Error(data.error || "Initialization failed");
-        }
+      const res = await fetch("/api/init-db");
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.success) {
+        setMessage(data.message || "MySQL database table 'creators' initialized successfully!");
+        setStatus("success");
       } else {
-        throw new Error("HTTP error initializing database.");
+        throw new Error(data?.error || `HTTP ${res.status}: Database connection timed out or blocked by remote host.`);
       }
     } catch (err) {
       setStatus("error");
