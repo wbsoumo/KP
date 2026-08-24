@@ -8,6 +8,11 @@ import {
   type MediaItem,
   type AspectRatioType,
 } from "@/lib/gallery-store";
+import {
+  getStoredCreators,
+  saveStoredCreators,
+  type CreatorData,
+} from "@/lib/creator-store";
 
 export const Route = createFileRoute("/kp-studio-x9z72q")({
   head: () => ({
@@ -61,6 +66,9 @@ function AdminPage() {
 
   // Gallery items list
   const [items, setItems] = useState<MediaItem[]>([]);
+  // Creators list & tab state
+  const [creators, setCreators] = useState<CreatorData[]>([]);
+  const [activeTab, setActiveTab] = useState<"gallery" | "creators">("gallery");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -68,6 +76,7 @@ function AdminPage() {
       if (session === "true") {
         setIsAuthenticated(true);
         setItems(getStoredMediaGallery());
+        setCreators(getStoredCreators());
       }
     }
   }, []);
@@ -299,23 +308,138 @@ function AdminPage() {
     );
   }
 
+  const handleStatusChange = (id: string, newStatus: CreatorData["status"]) => {
+    const updated = creators.map((c) => (c.id === id ? { ...c, status: newStatus } : c));
+    setCreators(updated);
+    saveStoredCreators(updated);
+  };
+
+  const handleDeleteCreator = (id: string) => {
+    if (confirm("Remove creator application?")) {
+      const updated = creators.filter((c) => c.id !== id);
+      setCreators(updated);
+      saveStoredCreators(updated);
+    }
+  };
+
   return (
     <main className="px-5 pb-28 pt-36 md:px-10 md:pt-44">
       <div className="mx-auto max-w-[1400px]">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center border-b border-white/10 pb-8">
           <div>
-            <span className="kp-eyebrow">Cloudinary CDN Studio Portal</span>
+            <span className="kp-eyebrow">Kreative Planet Studio Management</span>
             <h1 className="mt-2 text-4xl font-extrabold uppercase">
               Ideas in Orbit <span className="kp-gradient-text">Admin</span>
             </h1>
           </div>
-          <button
-            onClick={handleLogout}
-            className="kp-hairline inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-foreground hover:bg-white/10"
-          >
-            <LogOut className="h-4 w-4" /> Logout
-          </button>
+
+          <div className="flex items-center gap-4">
+            <div className="flex rounded-full border border-white/15 bg-card/60 p-1">
+              <button
+                onClick={() => setActiveTab("gallery")}
+                className={`rounded-full px-5 py-2 text-xs font-bold uppercase tracking-wider transition ${
+                  activeTab === "gallery"
+                    ? "kp-gradient-bg text-white shadow-[var(--glow-kp)]"
+                    : "text-muted-foreground hover:text-white"
+                }`}
+              >
+                Gallery ({items.length})
+              </button>
+              <button
+                onClick={() => setActiveTab("creators")}
+                className={`rounded-full px-5 py-2 text-xs font-bold uppercase tracking-wider transition ${
+                  activeTab === "creators"
+                    ? "kp-gradient-bg text-white shadow-[var(--glow-kp)]"
+                    : "text-muted-foreground hover:text-white"
+                }`}
+              >
+                Creators ({creators.length})
+              </button>
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className="kp-hairline inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-foreground hover:bg-white/10"
+            >
+              <LogOut className="h-4 w-4" /> Logout
+            </button>
+          </div>
         </div>
+
+        {activeTab === "creators" ? (
+          <div className="mt-10 space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold uppercase">Creator Network Applications</h2>
+                <p className="text-xs text-muted-foreground">
+                  Approve creator applications so they can log in to their dashboard and access real earnings & growth tracking.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {creators.map((c) => (
+                <div
+                  key={c.id}
+                  className="kp-hairline flex flex-col justify-between rounded-3xl bg-card/60 p-6 space-y-4 border border-white/10"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="kp-eyebrow text-kp-pink">{c.category}</span>
+                      <span
+                        className={`rounded-full px-3 py-1 text-[0.65rem] font-bold uppercase ${
+                          c.status === "approved"
+                            ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                            : c.status === "rejected"
+                            ? "bg-red-500/20 text-red-400 border border-red-500/30"
+                            : "bg-orange-500/20 text-orange-400 border border-orange-500/30"
+                        }`}
+                      >
+                        {c.status}
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl font-bold uppercase text-white">{c.fullName}</h3>
+                    <p className="text-sm font-bold text-kp-orange">{c.instagramHandle}</p>
+                    <p className="text-xs text-muted-foreground">{c.email} · {c.phone}</p>
+                  </div>
+
+                  <div className="rounded-2xl border border-white/10 bg-background/60 p-3 text-xs space-y-1.5">
+                    <p className="text-foreground/80">
+                      <strong className="text-white">Management:</strong>{" "}
+                      {c.managedBy === "manager"
+                        ? `Manager (${c.managerName || "N/A"}) - ${c.managerContact || ""}`
+                        : "Self Managed"}
+                    </p>
+                    {c.remarks && (
+                      <p className="text-muted-foreground italic">"{c.remarks}"</p>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2 border-t border-white/10 pt-4">
+                    <select
+                      value={c.status}
+                      onChange={(e) => handleStatusChange(c.id, e.target.value as CreatorData["status"])}
+                      className="rounded-xl border border-white/15 bg-background px-3 py-1.5 text-xs text-white focus:border-kp-pink focus:outline-none"
+                    >
+                      <option value="pending" className="bg-card">Pending</option>
+                      <option value="approved" className="bg-card">Approved</option>
+                      <option value="rejected" className="bg-card">Rejected</option>
+                    </select>
+
+                    <button
+                      onClick={() => handleDeleteCreator(c.id)}
+                      className="rounded-lg p-2 text-muted-foreground hover:bg-red-500/20 hover:text-red-400"
+                      title="Delete Application"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
 
         <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_1.4fr]">
           {/* Upload Form */}
@@ -458,6 +582,7 @@ function AdminPage() {
             </div>
           </div>
         </div>
+        )}
       </div>
 
       {/* Edit Options Modal */}
