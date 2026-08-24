@@ -21,13 +21,13 @@ function InitDbPage() {
     setMessage("Connecting to MySQL server (86.107.77.32)...");
 
     try {
-      const res = await fetch("/api/init-db");
+      const res = await fetch("/api/creators?action=init_db");
       const data = await res.json().catch(() => null);
       if (res.ok && data?.success) {
         setMessage(data.message || "MySQL database table 'creators' initialized successfully!");
         setStatus("success");
       } else {
-        throw new Error(data?.error || `HTTP ${res.status}: Database connection timed out or blocked by remote host.`);
+        throw new Error(data?.error || `HTTP ${res.status}: Access denied for MySQL user 'taskbaz3_kp' or connection timed out.`);
       }
     } catch (err) {
       setStatus("error");

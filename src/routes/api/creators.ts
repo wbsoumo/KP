@@ -3,15 +3,30 @@ import { fetchCreatorsFromMySQL, saveCreatorToMySQL, updateCreatorStatusInMySQL,
 import { type CreatorData } from "@/lib/creator-store";
 
 export const APIRoute = createAPIFileRoute("/api/creators")({
-  GET: async () => {
+  GET: async ({ request }) => {
     try {
+      const url = new URL(request.url);
+      if (url.searchParams.get("action") === "init_db") {
+        await initMySQLDatabase();
+        return new Response(
+          JSON.stringify({
+            success: true,
+            message: "MySQL database table 'creators' initialized successfully on host 86.107.77.32 (taskbaz3_kp).",
+          }),
+          { headers: { "Content-Type": "application/json" } }
+        );
+      }
+
       const creators = await fetchCreatorsFromMySQL();
       return new Response(JSON.stringify({ success: true, creators }), {
         headers: { "Content-Type": "application/json" },
       });
-    } catch {
+    } catch (err: any) {
       return new Response(
-        JSON.stringify({ success: false, error: "Failed to fetch creators from MySQL Database." }),
+        JSON.stringify({
+          success: false,
+          error: err?.message || err?.sqlMessage || "Failed to fetch creators from MySQL Database.",
+        }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }
