@@ -1,4 +1,3 @@
-import mysql from "mysql2/promise";
 import { type CreatorData } from "@/lib/creator-store";
 
 const MYSQL_CONFIG = {
@@ -10,10 +9,12 @@ const MYSQL_CONFIG = {
   connectTimeout: 10000,
 };
 
-let pool: mysql.Pool | null = null;
+let pool: any = null;
 
-function getPool() {
+async function getPool() {
+  if (typeof window !== "undefined") return null;
   if (!pool) {
+    const mysql = await import("mysql2/promise");
     pool = mysql.createPool({
       ...MYSQL_CONFIG,
       waitForConnections: true,
@@ -27,7 +28,8 @@ function getPool() {
 export async function initMySQLDatabase() {
   if (typeof window !== "undefined") return;
   try {
-    const p = getPool();
+    const p = await getPool();
+    if (!p) return;
     await p.query(`
       CREATE TABLE IF NOT EXISTS creators (
         id VARCHAR(255) PRIMARY KEY,
@@ -57,12 +59,13 @@ export async function fetchCreatorsFromMySQL(): Promise<CreatorData[]> {
   if (typeof window !== "undefined") return [];
 
   try {
-    const p = getPool();
+    const p = await getPool();
+    if (!p) return [];
     await initMySQLDatabase();
-    const [rows] = await p.query<any[]>("SELECT * FROM creators ORDER BY created_at DESC;");
+    const [rows] = await p.query("SELECT * FROM creators ORDER BY created_at DESC;");
 
     if (Array.isArray(rows)) {
-      return rows.map((r) => ({
+      return rows.map((r: any) => ({
         id: r.id,
         fullName: r.full_name,
         email: r.email,
@@ -91,7 +94,8 @@ export async function saveCreatorToMySQL(creator: CreatorData): Promise<boolean>
   if (typeof window !== "undefined") return false;
 
   try {
-    const p = getPool();
+    const p = await getPool();
+    if (!p) return false;
     await initMySQLDatabase();
 
     const sql = `
@@ -141,7 +145,8 @@ export async function updateCreatorStatusInMySQL(id: string, status: string): Pr
   if (typeof window !== "undefined") return false;
 
   try {
-    const p = getPool();
+    const p = await getPool();
+    if (!p) return false;
     await p.execute("UPDATE creators SET status = ? WHERE id = ?", [status, id]);
     return true;
   } catch (err) {

@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { Database, CheckCircle2, AlertCircle, RefreshCw } from "lucide-react";
-import { initMySQLDatabase } from "@/lib/mysql-db";
 
 export const Route = createFileRoute("/init-db")({
   head: () => ({
@@ -22,30 +21,22 @@ function InitDbPage() {
     setMessage("Connecting to MySQL server (86.107.77.32)...");
 
     try {
-      let success = false;
-      try {
-        const res = await fetch("/api/creators", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "init_db" }),
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success) {
-            success = true;
-            setMessage("MySQL database table 'creators' initialized successfully!");
-          }
+      const res = await fetch("/api/creators", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "init_db" }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          setMessage("MySQL database table 'creators' initialized successfully!");
+          setStatus("success");
+        } else {
+          throw new Error(data.error || "Initialization failed");
         }
-      } catch (err) {
-        console.warn("API route init fallback:", err);
+      } else {
+        throw new Error("HTTP error initializing database.");
       }
-
-      if (!success) {
-        await initMySQLDatabase();
-        setMessage("MySQL database initialized via client/server fallback!");
-      }
-
-      setStatus("success");
     } catch (err) {
       setStatus("error");
       setMessage(err instanceof Error ? err.message : "Failed to initialize database table.");
