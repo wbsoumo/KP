@@ -89,11 +89,24 @@ export function Portfolio({ compact = false }: { compact?: boolean }) {
                 {item.type === "video" ? (
                   <video
                     src={item.url}
-                    preload="none"
+                    poster={
+                      item.url.includes("cloudinary.com")
+                        ? item.url.replace("/upload/", "/upload/so_0/").replace(/\.(mp4|mov|webm)$/i, ".jpg")
+                        : undefined
+                    }
+                    preload="auto"
                     autoPlay
                     loop
                     muted
                     playsInline
+                    ref={(el) => {
+                      if (el) {
+                        el.muted = true;
+                        el.setAttribute("playsinline", "true");
+                        el.setAttribute("webkit-playsinline", "true");
+                        el.play().catch(() => {});
+                      }
+                    }}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 ) : (
@@ -176,10 +189,22 @@ export function Portfolio({ compact = false }: { compact?: boolean }) {
               <video
                 key={shownMedia[selectedIndex].url}
                 src={shownMedia[selectedIndex].url}
+                poster={
+                  shownMedia[selectedIndex].url.includes("cloudinary.com")
+                    ? shownMedia[selectedIndex].url.replace("/upload/", "/upload/so_0/").replace(/\.(mp4|mov|webm)$/i, ".jpg")
+                    : undefined
+                }
                 controls
                 autoPlay
                 playsInline
-                preload="metadata"
+                preload="auto"
+                ref={(el) => {
+                  if (el) {
+                    el.setAttribute("playsinline", "true");
+                    el.setAttribute("webkit-playsinline", "true");
+                    el.play().catch(() => {});
+                  }
+                }}
                 className="max-h-[75vh] w-auto max-w-full rounded-2xl shadow-2xl border border-white/10 object-contain bg-black"
               />
             ) : (

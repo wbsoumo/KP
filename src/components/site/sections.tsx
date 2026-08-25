@@ -351,10 +351,23 @@ export function ServicesSection({
               {isVid ? (
                 <video
                   src={selectedImage}
+                  poster={
+                    selectedImage.includes("cloudinary.com")
+                      ? selectedImage.replace("/upload/", "/upload/so_0/").replace(/\.(mp4|mov|webm)$/i, ".jpg")
+                      : undefined
+                  }
                   autoPlay
                   controls
                   loop
                   playsInline
+                  preload="auto"
+                  ref={(el) => {
+                    if (el) {
+                      el.setAttribute("playsinline", "true");
+                      el.setAttribute("webkit-playsinline", "true");
+                      el.play().catch(() => {});
+                    }
+                  }}
                   className="max-w-full max-h-[85vh] object-contain rounded-2xl animate-in zoom-in-95 duration-300"
                   onClick={(e) => e.stopPropagation()}
                 />
