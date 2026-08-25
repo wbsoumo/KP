@@ -21,7 +21,7 @@ function InitDbPage() {
     setMessage("Connecting to MySQL server (86.107.77.32)...");
 
     try {
-      const res = await fetch("/api/creators?action=init_db");
+      const res = await fetch("/api/init-db");
       const text = await res.text();
       let data: any = null;
       try {
