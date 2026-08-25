@@ -235,14 +235,46 @@ function AdminPage() {
     setIsBlogEditorOpen(true);
   };
 
-  // Upload Featured or Inline Image directly to Cloudinary
+  // Upload Featured or Inline Image directly to Cloudinary using signed upload
   const uploadImageToCloudinary = async (fileObj: File): Promise<string> => {
+    let cloudName = "dt02mpeqj";
+    let apiKey = "485515273593933";
+    let signature = "";
+    let timestamp = "";
+    const folder = "kreative-planet/blogs";
+
+    try {
+      const sigRes = await fetch("/api/cloudinary-sign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ folder }),
+      });
+      if (sigRes.ok) {
+        const sigData = await sigRes.json();
+        if (sigData?.signature) {
+          signature = sigData.signature;
+          timestamp = sigData.timestamp;
+          cloudName = sigData.cloudName;
+          apiKey = sigData.apiKey;
+        }
+      }
+    } catch (err) {
+      console.warn("Signature fetch fallback error:", err);
+    }
+
     const formData = new FormData();
     formData.append("file", fileObj);
-    formData.append("folder", "kreative-planet/blogs");
-    formData.append("upload_preset", "ml_default");
+    formData.append("folder", folder);
 
-    const res = await fetch("https://api.cloudinary.com/v1_1/dt02mpeqj/image/upload", {
+    if (signature && timestamp) {
+      formData.append("api_key", apiKey);
+      formData.append("timestamp", timestamp);
+      formData.append("signature", signature);
+    } else {
+      formData.append("upload_preset", "ml_default");
+    }
+
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
       method: "POST",
       body: formData,
     });
