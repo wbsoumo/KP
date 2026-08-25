@@ -33,6 +33,12 @@ export function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
+      el.classList.add("is-in");
+      return;
+    }
+
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -42,11 +48,20 @@ export function Reveal({
           }
         }
       },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0.08 },
+      { rootMargin: "50px 0px 50px 0px", threshold: 0.01 },
     );
     io.observe(el);
-    return () => io.disconnect();
-  }, []);
+
+    const timer = setTimeout(() => {
+      if (el) el.classList.add("is-in");
+    }, delay + 400);
+
+    return () => {
+      io.disconnect();
+      clearTimeout(timer);
+    };
+  }, [delay]);
+
   return (
     <div ref={ref} className={`kp-reveal ${className}`} style={{ transitionDelay: `${delay}ms` }}>
       {children}

@@ -21,6 +21,12 @@ export function Reveal({
     const node = ref.current;
     if (!node) return;
     setArmed(true);
+
+    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
+      setShown(true);
+      return;
+    }
+
     const io = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) {
@@ -28,18 +34,27 @@ export function Reveal({
           io.disconnect();
         }
       },
-      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+      { threshold: 0.01, rootMargin: "50px 0px 50px 0px" },
     );
     io.observe(node);
-    return () => io.disconnect();
-  }, []);
+
+    // Guaranteed fallback after delay + 400ms so content NEVER vanishes or stays hidden
+    const timer = setTimeout(() => {
+      setShown(true);
+    }, delay + 400);
+
+    return () => {
+      io.disconnect();
+      clearTimeout(timer);
+    };
+  }, [delay]);
 
   return (
     <Tag
       ref={ref}
       data-shown={shown}
       style={{ transitionDelay: `${delay}ms` }}
-      className={cn(armed && "kp-reveal", className)}
+      className={cn(armed && "kp-reveal", shown && "is-in", className)}
     >
       {children}
     </Tag>
