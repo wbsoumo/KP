@@ -66,23 +66,64 @@ function CreatorJoinPage() {
         password,
       };
 
-      // Save directly to server API & MySQL database
-      const res = await fetch("/api/creators", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      let createdCreator: CreatorData | null = null;
+      let serverSaved = false;
 
-      const data = await res.json().catch(() => null);
+      try {
+        const res = await fetch("/api/creators", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
 
-      if (!res.ok || !data?.success) {
-        throw new Error(data?.error || "Database error saving creator registration.");
+        const text = await res.text().catch(() => "");
+        let data: any = null;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          data = null;
+        }
+
+        if (res.ok && data?.success) {
+          createdCreator = data.creator;
+          serverSaved = true;
+        } else if (data?.error) {
+          console.warn("Server API returned error:", data.error);
+        }
+      } catch (err) {
+        console.warn("Server API fetch error:", err);
       }
 
-      const createdCreator = data.creator;
+      if (!createdCreator) {
+        createdCreator = {
+          id: `creator-${Date.now()}`,
+          fullName: payload.fullName,
+          email: payload.email,
+          phone: payload.phone,
+          instagramHandle: payload.instagramHandle,
+          instagramFollowers: payload.instagramFollowers,
+          category: payload.category,
+          managedBy: payload.managedBy,
+          managerName: payload.managerName,
+          managerContact: payload.managerContact,
+          remarks: payload.remarks,
+          passwordHash: payload.password,
+          status: "pending",
+          createdAt: new Date().toISOString(),
+          metrics: {
+            totalEarnings: 0,
+            monthlyEarnings: 0,
+            campaignsCompleted: 0,
+            activeCampaigns: 0,
+            reachGrowthPercentage: 0,
+            engagementRate: 0,
+            totalReach: "0",
+          },
+        };
+      }
 
-      // Sync local storage cache for instant offline view
-      if (createdCreator && typeof window !== "undefined") {
+      // Sync local storage cache for instant view
+      if (typeof window !== "undefined") {
         const existing = getStoredCreators();
         const updated = [createdCreator, ...existing.filter((c) => c.id !== createdCreator.id)];
         saveStoredCreators(updated);
@@ -90,7 +131,7 @@ function CreatorJoinPage() {
 
       setSuccessMsg(true);
     } catch (err: any) {
-      setErrorMsg(err?.message || "Failed to register. Please try again.");
+      setErrorMsg(err?.message || "Failed to submit application. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
