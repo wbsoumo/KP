@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { Database, CheckCircle2, AlertCircle, RefreshCw } from "lucide-react";
 
+import { initDbServerFn } from "@/lib/creators-server";
+
 export const Route = createFileRoute("/init-db")({
   head: () => ({
     meta: [
@@ -21,21 +23,12 @@ function InitDbPage() {
     setMessage("Connecting to MySQL server (86.107.77.32)...");
 
     try {
-      const res = await fetch("/api/init-db");
-      const text = await res.text();
-      let data: any = null;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        data = { error: text };
-      }
-
-      if (res.ok && data?.success) {
-        setMessage(data.message || "MySQL database table 'creators' initialized successfully!");
+      const res = await initDbServerFn();
+      if (res && res.success) {
+        setMessage(res.message || "MySQL database tables initialized successfully!");
         setStatus("success");
       } else {
-        const errDetail = data?.error || data?.message || (typeof data === "string" ? data : `HTTP ${res.status}`);
-        throw new Error(errDetail);
+        throw new Error(res?.error || "Failed DB init.");
       }
     } catch (err) {
       setStatus("error");
