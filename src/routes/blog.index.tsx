@@ -26,17 +26,17 @@ export const Route = createFileRoute("/blog/")({
 const CATEGORIES = ["ALL", "ADVERTISING", "BRANDING", "SOCIAL", "VIDEO", "CREATORS", "GROWTH"] as const;
 
 function BlogListingPage() {
-  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [blogs, setBlogs] = useState<BlogPost[]>(() =>
+    getStoredBlogs().filter((b) => b.status === "published")
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<(typeof CATEGORIES)[number]>("ALL");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setBlogs(getStoredBlogs().filter((b) => b.status === "published"));
     fetchBlogsFromAPI(false).then((list) => {
-      if (list && list.length > 0) {
-        setBlogs(list.filter((b) => b.status === "published"));
-      }
+      const activeList = list && list.length > 0 ? list : getStoredBlogs();
+      setBlogs(activeList.filter((b) => b.status === "published"));
       setLoading(false);
     });
   }, []);

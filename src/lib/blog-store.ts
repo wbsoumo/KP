@@ -182,7 +182,8 @@ export async function fetchBlogsFromAPI(includeDrafts = false): Promise<BlogPost
     console.warn("API fetch blogs fallback error:", err);
   }
 
-  return getStoredBlogs();
+  const stored = getStoredBlogs();
+  return stored.length > 0 ? stored : INITIAL_BLOGS;
 }
 
 export function getStoredBlogs(): BlogPost[] {
@@ -194,7 +195,12 @@ export function getStoredBlogs(): BlogPost[] {
       return INITIAL_BLOGS;
     }
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : INITIAL_BLOGS;
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed;
+    } else {
+      localStorage.setItem(STORAGE_KEY_BLOGS, JSON.stringify(INITIAL_BLOGS));
+      return INITIAL_BLOGS;
+    }
   } catch {
     return INITIAL_BLOGS;
   }

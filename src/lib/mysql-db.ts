@@ -371,7 +371,7 @@ export async function fetchBlogsFromMySQL(includeDrafts = false): Promise<BlogPo
 
     const [rows] = await p.query(query);
 
-    if (Array.isArray(rows)) {
+    if (Array.isArray(rows) && rows.length > 0) {
       return rows.map((r: any) => ({
         id: r.id,
         slug: r.slug,
