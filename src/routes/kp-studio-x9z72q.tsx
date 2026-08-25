@@ -23,6 +23,35 @@ import {
   Share2,
 } from "lucide-react";
 
+import {
+  type MediaItem,
+  type AspectRatioType,
+  getStoredMediaGallery,
+  saveStoredMediaGallery,
+  fetchMediaGalleryFromAPI,
+} from "@/lib/gallery-store";
+import {
+  type CreatorData,
+  getStoredCreators,
+  saveStoredCreators,
+  fetchCreatorsFromAPI,
+} from "@/lib/creator-store";
+import {
+  type BlogPost,
+  type FAQItem,
+  getStoredBlogs,
+  saveStoredBlogs,
+  fetchBlogsFromAPI,
+  analyzeYoastSEO,
+} from "@/lib/blog-store";
+import {
+  verifyAdminServerFn,
+  saveMediaItemServerFn,
+  deleteMediaItemServerFn,
+  saveBlogServerFn,
+  deleteBlogServerFn,
+} from "@/lib/creators-server";
+
 export const Route = createFileRoute("/kp-studio-x9z72q")({
   head: () => ({
     meta: [
