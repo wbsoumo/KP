@@ -68,57 +68,27 @@ function CreatorJoinPage() {
 
       let createdCreator: CreatorData | null = null;
 
+      const res = await fetch("/api/creators", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const text = await res.text().catch(() => "");
+      let data: any = null;
       try {
-        const res = await fetch("/api/creators", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        const text = await res.text().catch(() => "");
-        let data: any = null;
-        try {
-          data = JSON.parse(text);
-        } catch {
-          data = null;
-        }
-
-        if (res.ok && data?.success) {
-          createdCreator = data.creator;
-        }
-      } catch (err) {
-        console.warn("API route fetch error:", err);
+        data = JSON.parse(text);
+      } catch {
+        data = null;
       }
 
-      if (!createdCreator) {
-        createdCreator = {
-          id: `creator-${Date.now()}`,
-          fullName: payload.fullName,
-          email: payload.email,
-          phone: payload.phone,
-          instagramHandle: payload.instagramHandle,
-          instagramFollowers: payload.instagramFollowers,
-          category: payload.category,
-          managedBy: payload.managedBy,
-          managerName: payload.managerName,
-          managerContact: payload.managerContact,
-          remarks: payload.remarks,
-          passwordHash: payload.password,
-          status: "pending",
-          createdAt: new Date().toISOString(),
-          metrics: {
-            totalEarnings: 0,
-            monthlyEarnings: 0,
-            campaignsCompleted: 0,
-            activeCampaigns: 0,
-            reachGrowthPercentage: 0,
-            engagementRate: 0,
-            totalReach: "0",
-          },
-        };
+      if (!res.ok || !data?.success) {
+        throw new Error(data?.error || `Failed to save to MySQL database (HTTP ${res.status}).`);
       }
 
-      // Sync local cache
+      createdCreator = data.creator;
+
+      // Sync local cache for instant view
       if (typeof window !== "undefined") {
         const existing = getStoredCreators();
         const updated = [createdCreator, ...existing.filter((c) => c.id !== createdCreator.id)];
