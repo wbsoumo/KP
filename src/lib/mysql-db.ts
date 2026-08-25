@@ -128,7 +128,27 @@ export async function initMySQLDatabase() {
   const blogCount = Array.isArray(blogRows) && (blogRows[0] as any)?.count;
   if (blogCount === 0) {
     for (const blog of INITIAL_BLOGS) {
-      await saveBlogToMySQL(blog);
+      await p.execute(
+        `INSERT INTO blogs (
+          id, slug, title, excerpt, content, featured_image, category,
+          author, read_time, status, faqs, seo_data, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+        ON DUPLICATE KEY UPDATE title = VALUES(title), content = VALUES(content);`,
+        [
+          blog.id,
+          blog.slug,
+          blog.title,
+          blog.excerpt || "",
+          blog.content,
+          blog.featuredImage || "",
+          blog.category,
+          blog.author,
+          blog.readTime,
+          blog.status,
+          JSON.stringify(blog.faqs || []),
+          JSON.stringify(blog.seoData || {}),
+        ]
+      );
     }
     console.log(`MySQL blogs seeded with ${INITIAL_BLOGS.length} posts!`);
   }

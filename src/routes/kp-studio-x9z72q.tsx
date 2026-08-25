@@ -94,11 +94,11 @@ function AdminPage() {
   const [editUrl, setEditUrl] = useState("");
 
   // Gallery items & Creators
-  const [items, setItems] = useState<MediaItem[]>([]);
-  const [creators, setCreators] = useState<CreatorData[]>([]);
+  const [items, setItems] = useState<MediaItem[]>(() => getStoredMediaGallery());
+  const [creators, setCreators] = useState<CreatorData[]>(() => getStoredCreators());
   
   // Blog State
-  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [blogs, setBlogs] = useState<BlogPost[]>(() => getStoredBlogs());
   const [activeTab, setActiveTab] = useState<"gallery" | "creators" | "blogs">("gallery");
   const [isBlogEditorOpen, setIsBlogEditorOpen] = useState(false);
   const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
@@ -418,6 +418,7 @@ function AdminPage() {
         localStorage.setItem("kp_admin_auth", "true");
         fetchMediaGalleryFromAPI().then((list) => setItems(list));
         fetchCreatorsFromAPI().then((list) => setCreators(list));
+        fetchBlogsFromAPI(true).then((list) => setBlogs(list));
       } else {
         setLoginError("Invalid username or password credentials.");
       }
