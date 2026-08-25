@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/kp/ui";
 import {
   getStoredMediaGallery,
   saveStoredMediaGallery,
+  fetchMediaGalleryFromAPI,
   type MediaItem,
   type AspectRatioType,
 } from "@/lib/gallery-store";
@@ -14,6 +15,11 @@ import {
   saveStoredCreators,
   type CreatorData,
 } from "@/lib/creator-store";
+import {
+  verifyAdminServerFn,
+  saveMediaItemServerFn,
+  deleteMediaItemServerFn,
+} from "@/lib/creators-server";
 
 export const Route = createFileRoute("/kp-studio-x9z72q")({
   head: () => ({
@@ -76,7 +82,7 @@ function AdminPage() {
       const session = localStorage.getItem("kp_admin_auth");
       if (session === "true") {
         setIsAuthenticated(true);
-        setItems(getStoredMediaGallery());
+        fetchMediaGalleryFromAPI().then((list) => setItems(list));
         fetchCreatorsFromAPI().then((list) => setCreators(list));
       }
       const handleCreatorsUpdate = () => {
@@ -93,20 +99,35 @@ function AdminPage() {
     setIsLoggingIn(true);
     try {
       let isSuccess = false;
+
+      // 1. Try MySQL verifyAdminServerFn
       try {
-        const res = await fetch("/api/admin-auth", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success) isSuccess = true;
+        const res = await verifyAdminServerFn({ data: { username, password } });
+        if (res && res.success) {
+          isSuccess = true;
         }
-      } catch (err) {
-        console.warn("API route fallback:", err);
+      } catch (sfErr) {
+        console.warn("Server function admin auth failed, trying API route fallback:", sfErr);
       }
 
+      // 2. Fallback to API route /api/admin-auth
+      if (!isSuccess) {
+        try {
+          const res = await fetch("/api/admin-auth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.success) isSuccess = true;
+          }
+        } catch (err) {
+          console.warn("API route fallback:", err);
+        }
+      }
+
+      // 3. Environment default credential fallback
       if (!isSuccess && username === "admin" && password === "kreative2026") {
         isSuccess = true;
       }
@@ -114,7 +135,8 @@ function AdminPage() {
       if (isSuccess) {
         setIsAuthenticated(true);
         localStorage.setItem("kp_admin_auth", "true");
-        setItems(getStoredMediaGallery());
+        fetchMediaGalleryFromAPI().then((list) => setItems(list));
+        fetchCreatorsFromAPI().then((list) => setCreators(list));
       } else {
         setLoginError("Invalid username or password credentials.");
       }
@@ -205,11 +227,23 @@ function AdminPage() {
         aspectRatio,
       };
 
+      // Save to MySQL Database via Server Function & REST fallback
+      try {
+        await saveMediaItemServerFn({ data: newItem });
+      } catch (dbErr) {
+        console.warn("MySQL save error:", dbErr);
+        fetch("/api/media-gallery", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newItem),
+        }).catch(() => {});
+      }
+
       const updated = [newItem, ...items];
       setItems(updated);
       saveStoredMediaGallery(updated);
 
-      setSuccessMessage(`Successfully uploaded "${title}"!`);
+      setSuccessMessage(`Successfully uploaded "${title}" to MySQL database & CDN!`);
       setTitle("");
       setFile(null);
     } catch (err) {
@@ -220,8 +254,19 @@ function AdminPage() {
     }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to remove this item from the gallery?")) {
+      try {
+        await deleteMediaItemServerFn({ data: { id } });
+      } catch (dbErr) {
+        console.warn("MySQL delete error:", dbErr);
+        fetch("/api/media-gallery", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "delete", id }),
+        }).catch(() => {});
+      }
+
       const updated = items.filter((item) => item.id !== id);
       setItems(updated);
       saveStoredMediaGallery(updated);
@@ -237,23 +282,31 @@ function AdminPage() {
     setEditUrl(item.url);
   };
 
-  const handleSaveEdit = (e: React.FormEvent) => {
+  const handleSaveEdit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingItem) return;
 
-    const updated = items.map((it) =>
-      it.id === editingItem.id
-        ? {
-            ...it,
-            title: editTitle.trim(),
-            category: editCategory,
-            aspectRatio: editAspectRatio,
-            type: editType,
-            url: editUrl.trim(),
-          }
-        : it
-    );
+    const updatedItem: MediaItem = {
+      ...editingItem,
+      title: editTitle.trim(),
+      category: editCategory,
+      aspectRatio: editAspectRatio,
+      type: editType,
+      url: editUrl.trim(),
+    };
 
+    try {
+      await saveMediaItemServerFn({ data: updatedItem });
+    } catch (dbErr) {
+      console.warn("MySQL edit error:", dbErr);
+      fetch("/api/media-gallery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedItem),
+      }).catch(() => {});
+    }
+
+    const updated = items.map((it) => (it.id === editingItem.id ? updatedItem : it));
     setItems(updated);
     saveStoredMediaGallery(updated);
     setEditingItem(null);

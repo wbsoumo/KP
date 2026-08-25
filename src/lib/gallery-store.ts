@@ -190,6 +190,39 @@ export const INITIAL_MEDIA_GALLERY: MediaItem[] = [
 
 const STORAGE_KEY = "kp_admin_gallery_items";
 
+import { fetchMediaGalleryServerFn } from "@/lib/creators-server";
+
+export async function fetchMediaGalleryFromAPI(): Promise<MediaItem[]> {
+  try {
+    const serverRes = await fetchMediaGalleryServerFn();
+    if (serverRes?.success && Array.isArray(serverRes.items) && serverRes.items.length > 0) {
+      if (typeof window !== "undefined") {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(serverRes.items));
+      }
+      return serverRes.items;
+    }
+  } catch (err) {
+    console.warn("Server function fetch media gallery error:", err);
+  }
+
+  try {
+    const res = await fetch("/api/media-gallery");
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && Array.isArray(data.items) && data.items.length > 0) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data.items));
+        }
+        return data.items;
+      }
+    }
+  } catch (err) {
+    console.warn("API fetch media gallery fallback:", err);
+  }
+
+  return getStoredMediaGallery();
+}
+
 export function getStoredMediaGallery(): MediaItem[] {
   if (typeof window === "undefined") return INITIAL_MEDIA_GALLERY;
   try {

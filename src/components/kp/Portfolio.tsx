@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { Reveal } from "./ui";
-import { getStoredMediaGallery, type MediaItem } from "@/lib/gallery-store";
+import { getStoredMediaGallery, fetchMediaGalleryFromAPI, type MediaItem } from "@/lib/gallery-store";
 
 const CATEGORIES = ["ALL", "ADVERTISING", "BRANDING", "SOCIAL", "VIDEO", "CREATOR CAMPAIGNS"] as const;
 
@@ -29,7 +29,15 @@ export function Portfolio({ compact = false }: { compact?: boolean }) {
 
   useEffect(() => {
     setMediaList(getStoredMediaGallery());
-    const handleUpdate = () => setMediaList(getStoredMediaGallery());
+    fetchMediaGalleryFromAPI().then((list) => {
+      if (list && list.length > 0) setMediaList(list);
+    });
+
+    const handleUpdate = () => {
+      fetchMediaGalleryFromAPI().then((list) => {
+        if (list && list.length > 0) setMediaList(list);
+      });
+    };
     window.addEventListener("kp_gallery_updated", handleUpdate);
     return () => window.removeEventListener("kp_gallery_updated", handleUpdate);
   }, []);
