@@ -1,38 +1,27 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { Upload, Trash2, LogOut, CheckCircle2, Lock, Video, Edit3, X, Image as ImageIcon } from "lucide-react";
-import { SectionHeading } from "@/components/kp/ui";
 import {
-  getStoredMediaGallery,
-  saveStoredMediaGallery,
-  fetchMediaGalleryFromAPI,
-  type MediaItem,
-  type AspectRatioType,
-} from "@/lib/gallery-store";
-import {
-  fetchCreatorsFromAPI,
-  getStoredCreators,
-  saveStoredCreators,
-  type CreatorData,
-} from "@/lib/creator-store";
-import {
-  fetchBlogsFromAPI,
-  getStoredBlogs,
-  saveStoredBlogs,
-  analyzeYoastSEO,
-  type BlogPost,
-  type FAQItem,
-  type SEOData,
-} from "@/lib/blog-store";
-import {
-  verifyAdminServerFn,
-  saveMediaItemServerFn,
-  deleteMediaItemServerFn,
-  fetchBlogsServerFn,
-  saveBlogServerFn,
-  deleteBlogServerFn,
-} from "@/lib/creators-server";
-import { Globe, FileText, Plus, Eye, Sparkles, CheckCircle, AlertTriangle, XCircle, Search as SearchIcon, Image } from "lucide-react";
+  Upload,
+  Trash2,
+  LogOut,
+  CheckCircle2,
+  Lock,
+  Video,
+  Edit3,
+  X,
+  Image as ImageIcon,
+  Globe,
+  FileText,
+  Plus,
+  Eye,
+  Sparkles,
+  CheckCircle,
+  AlertTriangle,
+  XCircle,
+  Search as SearchIcon,
+  Image,
+  Share2,
+} from "lucide-react";
 
 export const Route = createFileRoute("/kp-studio-x9z72q")({
   head: () => ({
