@@ -80,7 +80,21 @@ export const INITIAL_CREATORS: CreatorData[] = [
   },
 ];
 
+import { fetchCreatorsServerFn } from "@/lib/creators-server";
+
 export async function fetchCreatorsFromAPI(): Promise<CreatorData[]> {
+  try {
+    const serverRes = await fetchCreatorsServerFn();
+    if (serverRes?.success && Array.isArray(serverRes.creators) && serverRes.creators.length > 0) {
+      if (typeof window !== "undefined") {
+        localStorage.setItem(STORAGE_KEY_CREATORS, JSON.stringify(serverRes.creators));
+      }
+      return serverRes.creators;
+    }
+  } catch (err) {
+    console.warn("Server function fetch creators error:", err);
+  }
+
   try {
     const res = await fetch("/api/creators");
     if (res.ok) {

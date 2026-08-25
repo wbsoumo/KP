@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { User, Phone, Instagram, KeyRound, ArrowRight, CheckCircle2, UserCheck, FileText, AlertCircle } from "lucide-react";
+import { saveCreatorServerFn } from "@/lib/creators-server";
 import { getStoredCreators, saveStoredCreators, type CreatorData } from "@/lib/creator-store";
 
 export const Route = createFileRoute("/creators/join")({
@@ -52,7 +53,8 @@ function CreatorJoinPage() {
     setIsSubmitting(true);
 
     try {
-      const payload = {
+      const payload: CreatorData = {
+        id: `creator-${Date.now()}`,
         fullName: fullName.trim(),
         email: email.trim(),
         phone: phone.trim(),
@@ -63,65 +65,78 @@ function CreatorJoinPage() {
         managerName: managedBy === "manager" ? managerName.trim() : "",
         managerContact: managedBy === "manager" ? managerContact.trim() : "",
         remarks: remarks.trim(),
-        password,
+        passwordHash: password,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+        metrics: {
+          totalEarnings: 0,
+          monthlyEarnings: 0,
+          campaignsCompleted: 0,
+          activeCampaigns: 0,
+          reachGrowthPercentage: 0,
+          engagementRate: 0,
+          totalReach: "0",
+        },
       };
 
       let createdCreator: CreatorData | null = null;
 
+      // 1. Try TanStack Start Server Function
       try {
-        const res = await fetch("/api/creators", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        const text = await res.text().catch(() => "");
-        let data: any = null;
-        try {
-          data = JSON.parse(text);
-        } catch {
-          data = null;
+        const res = await saveCreatorServerFn({ data: payload });
+        if (res && res.success && res.creator) {
+          createdCreator = res.creator;
         }
-
-        if (res.ok && data?.success) {
-          createdCreator = data.creator;
-        }
-      } catch (err) {
-        console.warn("API route fetch error:", err);
+      } catch (sfErr) {
+        console.warn("Server function call failed, trying API route fallback:", sfErr);
       }
 
+      // 2. Fallback to API route if Server Function did not execute
       if (!createdCreator) {
-        createdCreator = {
-          id: `creator-${Date.now()}`,
-          fullName: payload.fullName,
-          email: payload.email,
-          phone: payload.phone,
-          instagramHandle: payload.instagramHandle,
-          instagramFollowers: payload.instagramFollowers,
-          category: payload.category,
-          managedBy: payload.managedBy,
-          managerName: payload.managerName,
-          managerContact: payload.managerContact,
-          remarks: payload.remarks,
-          passwordHash: payload.password,
-          status: "pending",
-          createdAt: new Date().toISOString(),
-          metrics: {
-            totalEarnings: 0,
-            monthlyEarnings: 0,
-            campaignsCompleted: 0,
-            activeCampaigns: 0,
-            reachGrowthPercentage: 0,
-            engagementRate: 0,
-            totalReach: "0",
-          },
-        };
+        try {
+          const res = await fetch("/api/creators", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              fullName: payload.fullName,
+              email: payload.email,
+              phone: payload.phone,
+              instagramHandle: payload.instagramHandle,
+              instagramFollowers: payload.instagramFollowers,
+              category: payload.category,
+              managedBy: payload.managedBy,
+              managerName: payload.managerName,
+              managerContact: payload.managerContact,
+              remarks: payload.remarks,
+              password: payload.passwordHash,
+            }),
+          });
+
+          const text = await res.text().catch(() => "");
+          let data: any = null;
+          try {
+            data = JSON.parse(text);
+          } catch {
+            data = null;
+          }
+
+          if (res.ok && data?.success) {
+            createdCreator = data.creator || payload;
+          }
+        } catch (err) {
+          console.warn("API route fetch error:", err);
+        }
+      }
+
+      // Fallback creator object if server didn't return
+      if (!createdCreator) {
+        createdCreator = payload;
       }
 
       // Sync local cache
       if (typeof window !== "undefined") {
         const existing = getStoredCreators();
-        const updated = [createdCreator, ...existing.filter((c) => c.id !== createdCreator.id)];
+        const updated = [createdCreator, ...existing.filter((c) => c.id !== createdCreator!.id)];
         saveStoredCreators(updated);
       }
 
