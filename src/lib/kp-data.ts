@@ -248,3 +248,11 @@ export const CONTACTS = [
 export const PHONE = "+91 79806 57709";
 export const PHONE_TEL = "+917980657709";
 export const WHATSAPP = "https://wa.me/917980657709?text=Hi%20Kreative%20Planet%2C%20I%27d%20like%20to%20start%20a%20project.";
+
+export const OFFICE_ADDRESS = {
+  title: "Office Address",
+  line1: "Technopolis, 11th Floor, BP Block,",
+  line2: "Sector V, Bidhannagar, North 24 Parganas,",
+  line3: "Salt Lake, Kolkata - 700091, India",
+  full: "Technopolis, 11th Floor, BP Block, Sector V, Bidhannagar, North 24 Parganas, Salt Lake, Kolkata - 700091, India",
+};

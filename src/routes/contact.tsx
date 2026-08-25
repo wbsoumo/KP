@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CtaLink, Reveal, SectionHeading } from "@/components/kp/ui";
-import { CONTACTS } from "@/lib/kp-data";
+import { CONTACTS, OFFICE_ADDRESS } from "@/lib/kp-data";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -63,6 +63,19 @@ function ContactPage() {
             </Reveal>
           ))}
         </div>
+
+        {/* Office Address Card */}
+        <Reveal delay={240} className="mt-8">
+          <div className="kp-hairline rounded-3xl bg-card/50 p-8">
+            <p className="kp-eyebrow text-kp-pink mb-2">{OFFICE_ADDRESS.title}</p>
+            <h3 className="text-xl font-bold uppercase text-foreground">Kreative Planet Studio</h3>
+            <p className="mt-3 text-sm md:text-base text-foreground/80 leading-relaxed max-w-2xl">
+              {OFFICE_ADDRESS.line1}<br />
+              {OFFICE_ADDRESS.line2}<br />
+              {OFFICE_ADDRESS.line3}
+            </p>
+          </div>
+        </Reveal>
 
         <div className="mt-24 flex flex-wrap gap-4">
           <CtaLink to="/work" variant="ghost">

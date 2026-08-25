@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Logo, Magnetic } from "./ui";
-import { CONTACTS } from "@/lib/kp-data";
+import { CONTACTS, OFFICE_ADDRESS } from "@/lib/kp-data";
 
 const NAV: { label: string; to: "/" | "/work" | "/creators" | "/about" | "/contact"; hash?: string }[] = [
   { label: "Universe", to: "/" },
@@ -21,6 +21,14 @@ export function Footer() {
             A creative advertising and brand content studio. Every planet is a capability, every
             orbit an idea.
           </p>
+          <div className="mt-6 max-w-xs rounded-2xl border border-white/10 bg-card/40 p-4 text-xs text-muted-foreground shadow-lg backdrop-blur-md">
+            <p className="kp-eyebrow mb-2 text-kp-pink font-semibold uppercase tracking-wider">{OFFICE_ADDRESS.title}</p>
+            <p className="text-foreground/90 font-medium leading-relaxed">
+              {OFFICE_ADDRESS.line1}<br />
+              {OFFICE_ADDRESS.line2}<br />
+              {OFFICE_ADDRESS.line3}
+            </p>
+          </div>
         </div>
 
         <nav aria-label="Footer">
