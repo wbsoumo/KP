@@ -43,7 +43,10 @@ export function Portfolio({ compact = false }: { compact?: boolean }) {
   }, []);
 
   const filteredMedia = activeCategory === "ALL"
-    ? mediaList
+    ? [
+        ...mediaList.filter((item) => item.type === "video"),
+        ...mediaList.filter((item) => item.type !== "video"),
+      ]
     : mediaList.filter((item) => item.category === activeCategory);
 
   const shownMedia = compact ? filteredMedia.slice(0, 4) : filteredMedia;
