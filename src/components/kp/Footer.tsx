@@ -2,11 +2,12 @@ import { Link } from "@tanstack/react-router";
 import { Logo, Magnetic } from "./ui";
 import { CONTACTS, OFFICE_ADDRESS } from "@/lib/kp-data";
 
-const NAV: { label: string; to: "/" | "/work" | "/creators" | "/about" | "/contact"; hash?: string }[] = [
+const NAV: { label: string; to: any; hash?: string }[] = [
   { label: "Universe", to: "/" },
   { label: "Work", to: "/work" },
   { label: "Planets", to: "/", hash: "planets" },
   { label: "Creators", to: "/creators" },
+  { label: "Blog", to: "/blog" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];

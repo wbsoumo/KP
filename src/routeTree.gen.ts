@@ -17,6 +17,8 @@ import { Route as InitDbRouteImport } from './routes/init-db'
 import { Route as KpStudioX9z72qRouteImport } from './routes/kp-studio-x9z72q'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as WorkRouteImport } from './routes/work'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CreatorsIndexRouteImport } from './routes/creators.index'
 import { Route as CreatorsDashboardRouteImport } from './routes/creators.dashboard'
 import { Route as CreatorsJoinRouteImport } from './routes/creators.join'
@@ -64,6 +66,16 @@ const WorkRoute = WorkRouteImport.update({
   path: '/work',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CreatorsIndexRoute = CreatorsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -104,10 +116,12 @@ export interface FileRoutesByFullPath {
   '/kp-studio-x9z72q': typeof KpStudioX9z72qRoute
   '/services': typeof ServicesRoute
   '/work': typeof WorkRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/creators/dashboard': typeof CreatorsDashboardRoute
   '/creators/join': typeof CreatorsJoinRoute
   '/creators/login': typeof CreatorsLoginRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/creators/': typeof CreatorsIndexRoute
   '/work/': typeof WorkIndexRoute
 }
@@ -118,10 +132,12 @@ export interface FileRoutesByTo {
   '/init-db': typeof InitDbRoute
   '/kp-studio-x9z72q': typeof KpStudioX9z72qRoute
   '/services': typeof ServicesRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/creators/dashboard': typeof CreatorsDashboardRoute
   '/creators/join': typeof CreatorsJoinRoute
   '/creators/login': typeof CreatorsLoginRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/blog': typeof BlogIndexRoute
   '/creators': typeof CreatorsIndexRoute
   '/work': typeof WorkIndexRoute
 }
@@ -135,10 +151,12 @@ export interface FileRoutesById {
   '/kp-studio-x9z72q': typeof KpStudioX9z72qRoute
   '/services': typeof ServicesRoute
   '/work': typeof WorkRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/creators/dashboard': typeof CreatorsDashboardRoute
   '/creators/join': typeof CreatorsJoinRoute
   '/creators/login': typeof CreatorsLoginRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/creators/': typeof CreatorsIndexRoute
   '/work/': typeof WorkIndexRoute
 }
@@ -153,10 +171,12 @@ export interface FileRouteTypes {
     | '/kp-studio-x9z72q'
     | '/services'
     | '/work'
+    | '/blog/$slug'
     | '/creators/dashboard'
     | '/creators/join'
     | '/creators/login'
     | '/work/$slug'
+    | '/blog/'
     | '/creators/'
     | '/work/'
   fileRoutesByTo: FileRoutesByTo
@@ -167,10 +187,12 @@ export interface FileRouteTypes {
     | '/init-db'
     | '/kp-studio-x9z72q'
     | '/services'
+    | '/blog/$slug'
     | '/creators/dashboard'
     | '/creators/join'
     | '/creators/login'
     | '/work/$slug'
+    | '/blog'
     | '/creators'
     | '/work'
   id:
@@ -183,10 +205,12 @@ export interface FileRouteTypes {
     | '/kp-studio-x9z72q'
     | '/services'
     | '/work'
+    | '/blog/$slug'
     | '/creators/dashboard'
     | '/creators/join'
     | '/creators/login'
     | '/work/$slug'
+    | '/blog/'
     | '/creators/'
     | '/work/'
   fileRoutesById: FileRoutesById
@@ -200,6 +224,8 @@ export interface RootRouteChildren {
   KpStudioX9z72qRoute: typeof KpStudioX9z72qRoute
   ServicesRoute: typeof ServicesRoute
   WorkRoute: typeof WorkRouteWithChildren
+  BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -258,6 +284,20 @@ declare module '@tanstack/react-router' {
       path: '/work'
       fullPath: '/work'
       preLoaderRoute: typeof WorkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/creators/': {
@@ -344,6 +384,8 @@ const rootRouteChildren: RootRouteChildren = {
   KpStudioX9z72qRoute: KpStudioX9z72qRoute,
   ServicesRoute: ServicesRoute,
   WorkRoute: WorkRouteWithChildren,
+  BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

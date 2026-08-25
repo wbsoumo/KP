@@ -8,9 +8,14 @@ import {
   fetchMediaGalleryFromMySQL,
   saveMediaItemToMySQL,
   deleteMediaItemFromMySQL,
+  fetchBlogsFromMySQL,
+  fetchBlogBySlugFromMySQL,
+  saveBlogToMySQL,
+  deleteBlogFromMySQL,
 } from "@/lib/mysql-db";
 import { type CreatorData } from "@/lib/creator-store";
 import { type MediaItem } from "@/lib/gallery-store";
+import { type BlogPost } from "@/lib/blog-store";
 
 /* =========================================================================
    CREATORS SERVER FUNCTIONS
@@ -124,5 +129,57 @@ export const deleteMediaItemServerFn = createServerFn({ method: "POST" })
     } catch (err: any) {
       console.error("deleteMediaItemServerFn Error:", err);
       return { success: false, error: err?.message || "Failed to delete gallery item from MySQL." };
+    }
+  });
+
+/* =========================================================================
+   BLOGS SERVER FUNCTIONS
+   ========================================================================= */
+
+export const fetchBlogsServerFn = createServerFn({ method: "GET" })
+  .validator((data: { includeDrafts?: boolean } | undefined) => data)
+  .handler(async ({ data }) => {
+    try {
+      const blogs = await fetchBlogsFromMySQL(data?.includeDrafts || false);
+      return { success: true, blogs };
+    } catch (err: any) {
+      console.error("fetchBlogsServerFn Error:", err);
+      return { success: false, error: err?.message || "Failed to fetch blogs from MySQL." };
+    }
+  });
+
+export const fetchBlogBySlugServerFn = createServerFn({ method: "GET" })
+  .validator((data: { slug: string }) => data)
+  .handler(async ({ data }) => {
+    try {
+      const blog = await fetchBlogBySlugFromMySQL(data.slug);
+      return { success: true, blog };
+    } catch (err: any) {
+      console.error("fetchBlogBySlugServerFn Error:", err);
+      return { success: false, error: err?.message || "Failed to fetch blog by slug from MySQL." };
+    }
+  });
+
+export const saveBlogServerFn = createServerFn({ method: "POST" })
+  .validator((data: any) => data as BlogPost)
+  .handler(async ({ data }) => {
+    try {
+      await saveBlogToMySQL(data);
+      return { success: true, blog: data };
+    } catch (err: any) {
+      console.error("saveBlogServerFn Error:", err);
+      return { success: false, error: err?.message || "Failed to save blog post to MySQL." };
+    }
+  });
+
+export const deleteBlogServerFn = createServerFn({ method: "POST" })
+  .validator((data: { id: string }) => data)
+  .handler(async ({ data }) => {
+    try {
+      await deleteBlogFromMySQL(data.id);
+      return { success: true };
+    } catch (err: any) {
+      console.error("deleteBlogServerFn Error:", err);
+      return { success: false, error: err?.message || "Failed to delete blog post from MySQL." };
     }
   });

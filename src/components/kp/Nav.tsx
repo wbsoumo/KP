@@ -2,11 +2,12 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Logo, Magnetic } from "./ui";
 
-const LINKS: { label: string; to: "/" | "/work" | "/creators" | "/about"; hash?: string }[] = [
+const LINKS: { label: string; to: any; hash?: string }[] = [
   { label: "Universe", to: "/" },
   { label: "Work", to: "/work" },
   { label: "Planets", to: "/", hash: "planets" },
   { label: "Creators", to: "/creators" },
+  { label: "Blog", to: "/blog" },
   { label: "About", to: "/about" },
 ];
 

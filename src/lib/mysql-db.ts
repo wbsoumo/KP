@@ -1,5 +1,6 @@
 import { type CreatorData } from "@/lib/creator-store";
 import { INITIAL_MEDIA_GALLERY, type MediaItem } from "@/lib/gallery-store";
+import { INITIAL_BLOGS, type BlogPost } from "@/lib/blog-store";
 
 const MYSQL_CONFIG = {
   host: process.env.MYSQL_HOST || "86.107.77.32",
@@ -102,7 +103,37 @@ export async function initMySQLDatabase() {
     console.log(`MySQL media gallery seeded with ${INITIAL_MEDIA_GALLERY.length} items!`);
   }
 
-  console.log("MySQL database tables (creators, admin_users, media_gallery) initialized successfully!");
+  // 4. Blogs table with Yoast SEO Suite & FAQs JSON
+  await p.query(`
+    CREATE TABLE IF NOT EXISTS blogs (
+      id VARCHAR(255) PRIMARY KEY,
+      slug VARCHAR(255) UNIQUE NOT NULL,
+      title VARCHAR(255) NOT NULL,
+      excerpt TEXT,
+      content LONGTEXT NOT NULL,
+      featured_image TEXT,
+      category VARCHAR(255) NOT NULL DEFAULT 'GROWTH',
+      author VARCHAR(255) DEFAULT 'Kreative Planet Team',
+      read_time VARCHAR(50) DEFAULT '5 min read',
+      status VARCHAR(50) DEFAULT 'published',
+      faqs JSON,
+      seo_data JSON,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `);
+
+  // Seed initial blog posts if empty
+  const [blogRows] = await p.query("SELECT COUNT(*) as count FROM blogs;");
+  const blogCount = Array.isArray(blogRows) && (blogRows[0] as any)?.count;
+  if (blogCount === 0) {
+    for (const blog of INITIAL_BLOGS) {
+      await saveBlogToMySQL(blog);
+    }
+    console.log(`MySQL blogs seeded with ${INITIAL_BLOGS.length} posts!`);
+  }
+
+  console.log("MySQL database tables (creators, admin_users, media_gallery, blogs) initialized successfully!");
 }
 
 /* =========================================================================
@@ -299,5 +330,138 @@ export async function deleteMediaItemFromMySQL(id: string): Promise<boolean> {
   const p = await getPool();
   if (!p) throw new Error("Could not initialize MySQL connection pool.");
   await p.execute("DELETE FROM media_gallery WHERE id = ?", [id]);
+  return true;
+}
+
+/* =========================================================================
+   BLOGS & YOAST SEO FUNCTIONS
+   ========================================================================= */
+
+export async function fetchBlogsFromMySQL(includeDrafts = false): Promise<BlogPost[]> {
+  if (typeof window !== "undefined") return [];
+
+  try {
+    const p = await getPool();
+    if (!p) return [];
+    await initMySQLDatabase();
+
+    const query = includeDrafts
+      ? "SELECT * FROM blogs ORDER BY created_at DESC;"
+      : "SELECT * FROM blogs WHERE status = 'published' ORDER BY created_at DESC;";
+
+    const [rows] = await p.query(query);
+
+    if (Array.isArray(rows)) {
+      return rows.map((r: any) => ({
+        id: r.id,
+        slug: r.slug,
+        title: r.title,
+        excerpt: r.excerpt || "",
+        content: r.content,
+        featuredImage: r.featured_image || "",
+        category: r.category || "GROWTH",
+        author: r.author || "Kreative Planet Team",
+        readTime: r.read_time || "5 min read",
+        status: r.status as "published" | "draft",
+        faqs: typeof r.faqs === "string" ? JSON.parse(r.faqs) : r.faqs || [],
+        seoData: typeof r.seo_data === "string" ? JSON.parse(r.seo_data) : r.seo_data || {},
+        createdAt: r.created_at ? new Date(r.created_at).toISOString() : new Date().toISOString(),
+        updatedAt: r.updated_at ? new Date(r.updated_at).toISOString() : undefined,
+      }));
+    }
+  } catch (err) {
+    console.warn("MySQL fetch blogs error:", err);
+  }
+
+  return INITIAL_BLOGS;
+}
+
+export async function fetchBlogBySlugFromMySQL(slug: string): Promise<BlogPost | null> {
+  if (typeof window !== "undefined") return null;
+
+  try {
+    const p = await getPool();
+    if (!p) return null;
+    await initMySQLDatabase();
+
+    const [rows] = await p.execute("SELECT * FROM blogs WHERE slug = ?", [slug]);
+
+    if (Array.isArray(rows) && rows.length > 0) {
+      const r = rows[0] as any;
+      return {
+        id: r.id,
+        slug: r.slug,
+        title: r.title,
+        excerpt: r.excerpt || "",
+        content: r.content,
+        featuredImage: r.featured_image || "",
+        category: r.category || "GROWTH",
+        author: r.author || "Kreative Planet Team",
+        readTime: r.read_time || "5 min read",
+        status: r.status as "published" | "draft",
+        faqs: typeof r.faqs === "string" ? JSON.parse(r.faqs) : r.faqs || [],
+        seoData: typeof r.seo_data === "string" ? JSON.parse(r.seo_data) : r.seo_data || {},
+        createdAt: r.created_at ? new Date(r.created_at).toISOString() : new Date().toISOString(),
+        updatedAt: r.updated_at ? new Date(r.updated_at).toISOString() : undefined,
+      };
+    }
+  } catch (err) {
+    console.warn("MySQL fetch blog by slug error:", err);
+  }
+
+  return INITIAL_BLOGS.find((b) => b.slug === slug) || null;
+}
+
+export async function saveBlogToMySQL(blog: BlogPost): Promise<boolean> {
+  if (typeof window !== "undefined") return false;
+
+  const p = await getPool();
+  if (!p) throw new Error("Could not initialize MySQL connection pool.");
+  await initMySQLDatabase();
+
+  const sql = `
+    INSERT INTO blogs (
+      id, slug, title, excerpt, content, featured_image, category,
+      author, read_time, status, faqs, seo_data, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+    ON DUPLICATE KEY UPDATE
+      slug = VALUES(slug),
+      title = VALUES(title),
+      excerpt = VALUES(excerpt),
+      content = VALUES(content),
+      featured_image = VALUES(featured_image),
+      category = VALUES(category),
+      author = VALUES(author),
+      read_time = VALUES(read_time),
+      status = VALUES(status),
+      faqs = VALUES(faqs),
+      seo_data = VALUES(seo_data),
+      updated_at = NOW();
+  `;
+
+  await p.execute(sql, [
+    blog.id,
+    blog.slug,
+    blog.title,
+    blog.excerpt || "",
+    blog.content,
+    blog.featuredImage || "",
+    blog.category,
+    blog.author,
+    blog.readTime,
+    blog.status,
+    JSON.stringify(blog.faqs || []),
+    JSON.stringify(blog.seoData || {}),
+  ]);
+
+  return true;
+}
+
+export async function deleteBlogFromMySQL(id: string): Promise<boolean> {
+  if (typeof window !== "undefined") return false;
+
+  const p = await getPool();
+  if (!p) throw new Error("Could not initialize MySQL connection pool.");
+  await p.execute("DELETE FROM blogs WHERE id = ?", [id]);
   return true;
 }
