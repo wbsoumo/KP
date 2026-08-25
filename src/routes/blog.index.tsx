@@ -55,29 +55,29 @@ function BlogListingPage() {
   const gridPosts = filteredBlogs.slice(1);
 
   return (
-    <main className="px-5 pb-28 pt-36 md:px-10 md:pt-44">
+    <main className="px-5 pb-20 pt-24 md:px-10 md:pt-28">
       <div className="mx-auto max-w-[1400px]">
         {/* Header Title */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
+        <div className="text-center max-w-3xl mx-auto space-y-2">
           <Reveal>
             <span className="kp-eyebrow text-kp-pink flex items-center justify-center gap-1.5">
               <Sparkles className="h-4 w-4" /> Kreative Planet Journal
             </span>
           </Reveal>
           <Reveal delay={60}>
-            <h1 className="font-display text-4xl font-extrabold uppercase leading-[0.92] tracking-tighter text-foreground sm:text-6xl lg:text-7xl">
+            <h1 className="font-display text-3xl font-extrabold uppercase leading-[0.92] tracking-tighter text-foreground sm:text-5xl lg:text-6xl">
               INSIGHTS <span className="kp-gradient-text">WITHOUT GRAVITY</span>
             </h1>
           </Reveal>
           <Reveal delay={120}>
-            <p className="mt-4 text-base leading-relaxed text-ink-soft sm:text-lg">
+            <p className="mt-2 text-sm leading-relaxed text-ink-soft sm:text-base">
               Strategy, vertical video production secrets, brand positionings, and digital content engines engineered for growth.
             </p>
           </Reveal>
         </div>
 
         {/* Search & Category Filter Bar */}
-        <div className="mt-14 space-y-6">
+        <div className="mt-6 space-y-4">
           <div className="relative max-w-md mx-auto">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
