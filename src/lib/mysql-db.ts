@@ -358,36 +358,75 @@ export async function deleteMediaItemFromMySQL(id: string): Promise<boolean> {
    ========================================================================= */
 
 export async function fetchBlogsFromMySQL(includeDrafts = false): Promise<BlogPost[]> {
-  if (typeof window !== "undefined") return [];
+  if (typeof window !== "undefined") return INITIAL_BLOGS;
 
   try {
     const p = await getPool();
-    if (!p) return [];
+    if (!p) return INITIAL_BLOGS;
     await initMySQLDatabase();
 
-    const query = includeDrafts
-      ? "SELECT * FROM blogs ORDER BY created_at DESC;"
-      : "SELECT * FROM blogs WHERE status = 'published' ORDER BY created_at DESC;";
-
-    const [rows] = await p.query(query);
+    const [rows] = await p.query("SELECT * FROM blogs ORDER BY created_at DESC;");
 
     if (Array.isArray(rows) && rows.length > 0) {
-      return rows.map((r: any) => ({
-        id: r.id,
-        slug: r.slug,
-        title: r.title,
-        excerpt: r.excerpt || "",
-        content: r.content,
-        featuredImage: r.featured_image || "",
-        category: r.category || "GROWTH",
-        author: r.author || "Kreative Planet Team",
-        readTime: r.read_time || "5 min read",
-        status: r.status as "published" | "draft",
-        faqs: typeof r.faqs === "string" ? JSON.parse(r.faqs) : r.faqs || [],
-        seoData: typeof r.seo_data === "string" ? JSON.parse(r.seo_data) : r.seo_data || {},
-        createdAt: r.created_at ? new Date(r.created_at).toISOString() : new Date().toISOString(),
-        updatedAt: r.updated_at ? new Date(r.updated_at).toISOString() : undefined,
-      }));
+      const parsedBlogs = rows.map((r: any) => {
+        let faqsArr: any[] = [];
+        let seoObj: any = {};
+        try {
+          faqsArr = typeof r.faqs === "string" ? JSON.parse(r.faqs) : Array.isArray(r.faqs) ? r.faqs : [];
+        } catch {
+          faqsArr = [];
+        }
+        try {
+          seoObj = typeof r.seo_data === "string" ? JSON.parse(r.seo_data) : r.seo_data || {};
+        } catch {
+          seoObj = {};
+        }
+
+        let createdIso = new Date().toISOString();
+        if (r.created_at) {
+          try {
+            createdIso = new Date(r.created_at).toISOString();
+          } catch {
+            createdIso = new Date().toISOString();
+          }
+        }
+
+        let updatedIso: string | undefined = undefined;
+        if (r.updated_at) {
+          try {
+            updatedIso = new Date(r.updated_at).toISOString();
+          } catch {
+            updatedIso = undefined;
+          }
+        }
+
+        const rawStatus = (r.status || "published").toString().toLowerCase();
+        const statusVal: "published" | "draft" = rawStatus === "draft" ? "draft" : "published";
+
+        return {
+          id: r.id || `blog-${Date.now()}`,
+          slug: r.slug,
+          title: r.title,
+          excerpt: r.excerpt || "",
+          content: r.content,
+          featuredImage: r.featured_image || "",
+          category: r.category || "GROWTH",
+          author: r.author || "Kreative Planet Team",
+          readTime: r.read_time || "5 min read",
+          status: statusVal,
+          faqs: faqsArr,
+          seoData: seoObj,
+          createdAt: createdIso,
+          updatedAt: updatedIso,
+        };
+      });
+
+      if (!includeDrafts) {
+        const publishedOnly = parsedBlogs.filter((b: any) => b.status === "published");
+        return publishedOnly.length > 0 ? publishedOnly : parsedBlogs;
+      }
+
+      return parsedBlogs;
     }
   } catch (err) {
     console.warn("MySQL fetch blogs error:", err);

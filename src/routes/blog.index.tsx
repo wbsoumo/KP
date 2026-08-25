@@ -35,8 +35,13 @@ function BlogListingPage() {
 
   useEffect(() => {
     fetchBlogsFromAPI(false).then((list) => {
-      const activeList = list && list.length > 0 ? list : getStoredBlogs();
-      setBlogs(activeList.filter((b) => b.status === "published"));
+      const sourceList = list && list.length > 0 ? list : getStoredBlogs();
+      const published = sourceList.filter(
+        (b) => !b.status || b.status.toLowerCase() === "published" || b.status !== "draft"
+      );
+      if (published.length > 0) {
+        setBlogs(published);
+      }
       setLoading(false);
     });
   }, []);
