@@ -127,11 +127,13 @@ export function getStoredCreators(): CreatorData[] {
   }
 }
 
-export function saveStoredCreators(creators: CreatorData[]): void {
+export function saveStoredCreators(creators: CreatorData[], notify = true): void {
   if (typeof window === "undefined") return;
   try {
     localStorage.setItem(STORAGE_KEY_CREATORS, JSON.stringify(creators));
-    window.dispatchEvent(new Event("kp_creators_updated"));
+    if (notify) {
+      window.dispatchEvent(new Event("kp_creators_updated"));
+    }
   } catch (err) {
     console.error("Failed to save creators:", err);
   }

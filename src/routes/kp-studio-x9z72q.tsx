@@ -46,6 +46,7 @@ import {
 } from "@/lib/blog-store";
 import {
   verifyAdminServerFn,
+  updateCreatorStatusServerFn,
   saveMediaItemServerFn,
   deleteMediaItemServerFn,
   saveBlogServerFn,
@@ -702,10 +703,19 @@ function AdminPage() {
 
 
   const handleStatusChange = async (id: string, newStatus: CreatorData["status"]) => {
+    // Optimistically update UI state and store without dispatching premature re-fetch event
     const updated = creators.map((c) => (c.id === id ? { ...c, status: newStatus } : c));
     setCreators(updated);
-    saveStoredCreators(updated);
+    saveStoredCreators(updated, false);
 
+    // 1. Update status directly in MySQL database via Server Function
+    try {
+      await updateCreatorStatusServerFn({ data: { id, status: newStatus } });
+    } catch (err) {
+      console.warn("Server function status update fallback:", err);
+    }
+
+    // 2. Call REST API endpoint fallback
     try {
       await fetch("/api/creators", {
         method: "POST",
@@ -713,7 +723,7 @@ function AdminPage() {
         body: JSON.stringify({ action: "update_status", id, status: newStatus }),
       });
     } catch (err) {
-      console.warn("Failed updating status in Vercel DB:", err);
+      console.warn("Failed updating status in API DB:", err);
     }
   };
 
