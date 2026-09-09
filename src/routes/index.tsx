@@ -72,7 +72,7 @@ function Hero() {
           </div>
         </Reveal>
         <Reveal delay={420}>
-          <div className="relative mt-8 overflow-hidden py-4 [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
+          <div className="relative mt-3 overflow-hidden py-1 [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
             <div className="flex w-max items-center gap-6 animate-kp-marquee hover:[animation-play-state:paused]">
               {[...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, idx) => (
                 <div

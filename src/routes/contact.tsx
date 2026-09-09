@@ -77,9 +77,9 @@ function ContactPage() {
           </div>
         </Reveal>
 
-        <Reveal delay={300} className="mt-14">
-          <p className="kp-eyebrow text-center text-muted-foreground mb-4">Trusted By Ambitious Brands</p>
-          <div className="relative overflow-hidden py-4 [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
+        <Reveal delay={300} className="mt-8">
+          <p className="kp-eyebrow text-center text-muted-foreground mb-2">Trusted By Ambitious Brands</p>
+          <div className="relative overflow-hidden py-1 [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
             <div className="flex w-max items-center gap-6 animate-kp-marquee hover:[animation-play-state:paused]">
               {[...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, idx) => (
                 <div
