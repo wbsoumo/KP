@@ -256,3 +256,11 @@ export const OFFICE_ADDRESS = {
   line3: "Salt Lake, Kolkata - 700091, India",
   full: "Technopolis, 11th Floor, BP Block, Sector V, Bidhannagar, North 24 Parganas, Salt Lake, Kolkata - 700091, India",
 };
+
+export const CLIENT_LOGOS = [
+  { name: "Zojak World Wide", src: "/logos/zojak.png" },
+  { name: "Pathfinder", src: "/logos/pathfinder.png" },
+  { name: "SignTific", src: "/logos/signtific.png" },
+  { name: "Mankind", src: "/logos/mankind.png" },
+  { name: "Siddha", src: "/logos/siddha.png" },
+];

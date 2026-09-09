@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CtaLink, Magnetic, PlanetBody, Reveal, SectionHeading } from "@/components/kp/ui";
 import { Portfolio } from "@/components/kp/Portfolio";
 import { ServicesSection } from "@/components/site/sections";
-import { CREATORS, GROWTH_ORBIT, PHONE, PHONE_TEL, PLANETS, WHATSAPP } from "@/lib/kp-data";
+import { CLIENT_LOGOS, CREATORS, GROWTH_ORBIT, PHONE, PHONE_TEL, PLANETS, WHATSAPP } from "@/lib/kp-data";
 
 const TITLE = "Kreative Planet — Creativity Without Gravity";
 const DESCRIPTION =
@@ -69,6 +69,25 @@ function Hero() {
                 Soumojit Saha (+91 80162 22991)
               </a>
             </span>
+          </div>
+        </Reveal>
+        <Reveal delay={420}>
+          <div className="relative mt-8 overflow-hidden py-4 [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
+            <div className="flex w-max items-center gap-6 animate-kp-marquee hover:[animation-play-state:paused]">
+              {[...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS, ...CLIENT_LOGOS].map((logo, idx) => (
+                <div
+                  key={`${logo.name}-${idx}`}
+                  className="group relative flex h-20 w-44 shrink-0 items-center justify-center rounded-2xl bg-white p-3.5 shadow-md transition-all duration-300 hover:scale-105 hover:shadow-xl md:h-24 md:w-56"
+                >
+                  <img
+                    src={logo.src}
+                    alt={logo.name}
+                    className="max-h-full max-w-full object-contain filter transition-all duration-300 group-hover:brightness-105"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </Reveal>
       </div>

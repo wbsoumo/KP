@@ -192,6 +192,19 @@
   }
 }
 
+@keyframes kp-marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@utility animate-kp-marquee {
+  animation: kp-marquee 25s linear infinite;
+}
+
 @utility kp-float {
   animation: kp-float 7s ease-in-out infinite;
 }
